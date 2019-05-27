@@ -4,7 +4,11 @@
 
 	$id = $_GET['id'];
 	$db = new PDO('mysql:host=localhost;dbname=cmsc 127: buy and sell','root','');
-	$username = $_SESSION['username'];
+	$username = "";
+	if(isset($_SESSION['username'])){
+		$username = $_SESSION['username'];
+		
+	}
 	
 	
 	$stmt = $db->prepare("SELECT * FROM item_on_sale WHERE `item_idnum` = '$id'"); //CHANGE THE 16 to a dynamic value
@@ -37,11 +41,16 @@
 			if($key=="book_type")$book_type = $value;
 			if($key=="format")$format = $value;
 			if($key=="author")$author = $value;
+			if($key=="item_photo")$item_photo = $value;
 		}
+	}
+	if($seller_username!=$_SESSION['username']){
+		header('location: home_page.php');
 	}
 	
 	if(isset($_POST['editItem'])){
-		
+		$target_dir = "assets/books/";
+		$target_file = $target_dir . basename($_FILES["uploaded_file"]["name"]);
 		$item_name = strip_tags($_POST['item_name']);
 		$item_desc = strip_tags($_POST['item_desc']);
 		$item_price = strip_tags($_POST['item_price']);
@@ -51,10 +60,13 @@
 		$format = strip_tags($_POST['format']);
 		$book_type = strip_tags($_POST['book_type']);
 		$author = strip_tags($_POST['author']);
+		$item_photo = strip_tags($_FILES['uploaded_file']['name']);
 		
 		
-			$stmt = $db->prepare("UPDATE `item_on_sale` SET `item_name` = '$item_name', `item_desc` = '$item_desc', `item_price` = '$item_price', `condition` = '$condition', `in_stock` = '$in_stock', `book_no` = '$book_no', `format` = '$format', `book_type` = '$book_type', `author` = '$author' WHERE `item_idnum` = '$id';");
+			$stmt = $db->prepare("UPDATE `item_on_sale` SET `item_name` = '$item_name', `item_desc` = '$item_desc', `item_price` = '$item_price', `condition` = '$condition', `in_stock` = '$in_stock', `book_no` = '$book_no', `format` = '$format', `book_type` = '$book_type', `author` = '$author', `item_photo` = '$item_photo' WHERE `item_idnum` = '$id';");
 			$stmt->execute();
+			move_uploaded_file($_FILES["uploaded_file"]["tmp_name"], $target_file);
+			$stmt->debugDumpParams();
 	}
 	
 	if(isset($_POST['deleteItem'])){
@@ -137,7 +149,10 @@
               <div class="col-md-7">
                 <h1>Edit Book</h1>
 				
-				<form id = "newItem" method = 'post' action = ''>
+				<form id = "newItem" method = 'post' action = '' enctype="multipart/form-data">
+					<div class="form-group input-group" style="display: flex; justify-content: center">
+						<input id="uploaded_file" style="" name="uploaded_file" class = "form-control" type="file" >
+					</div>
 					<div class="form-group input-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"> Book Name </span>

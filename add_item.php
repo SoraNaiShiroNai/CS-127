@@ -107,6 +107,10 @@
 			
 				
 				<form id = "newItem" method = 'post' action = ''>
+					<div class="form-group input-group" style="display: flex; justify-content: center">
+						<input id="uploaded_file" style="" name="uploaded_file" class = "form-control" type="file" >
+						<a href="" onclick="document.getElementById('uploaded_file').click(); return false"><i class="fa fa-image" style="align:center; font-size: 10em" ></i></a>
+					</div>
 					<div class="form-group input-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"> Book Name </span>

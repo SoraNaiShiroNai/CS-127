@@ -136,6 +136,11 @@
 		$(document).on('click','#logoutButton', function () {
 			
         });
+		$(document).on('click','#searchButton', function () {
+			var searchWord = $('#search_bar').val();
+			console.log(searchWord);
+			window.location.href = "listing.php?search=" + searchWord;
+        });
       });
 
 
@@ -153,10 +158,10 @@
 
 		
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<form class="form-inline my-2 my-lg-0" style="width: 120%; padding-left: 50%;">
+			<div class="form-inline my-2 my-lg-0" style="width: 120%; padding-left: 50%;">
 				<input class="clear_on_enter" type='text' id='search_bar' style=" border-style: solid; border-width: 2px; border-color: grey; padding-left: 10px; width: 70%; padding-top: 2px" value="Look for great books...">
-				<button class="btn btn-secondary my-2 my-sm-0 btn-sm" style="border-radius: 0 20px 20px 0; margin-right: 2%; padding-right: 15px"> Search </button>
-			</form>
+				<button id = "searchButton" class="btn btn-secondary my-2 my-sm-0 btn-sm" style="border-radius: 0 20px 20px 0; margin-right: 2%; padding-right: 15px"> Search </button>
+			</div>
 			<form method = 'post' class="form-inline my-2 my-lg-0"  style="width: 20%; padding-left: 0%;">
 				<!--<input class="clear_on_enter" type='text' id='search_bar' style=" border-style: solid; border-width: 2px; border-color: grey; padding-left: 10px; width: 60%; padding-top: 2px" value="Look for great books...">
 				<button class="btn btn-secondary my-2 my-sm-0 btn-sm" style="border-radius: 0 20px 20px 0; margin-right: 2%; padding-right: 15px"> Search </button>-->

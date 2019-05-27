@@ -2,10 +2,7 @@
 
 	session_start();
 	
-	$username = "";
-	if(isset($_SESSION['username'])){
-		$username = $_SESSION['username'];
-	}
+	$username = $_SESSION['username'];
 
 	$db = new PDO('mysql:host=localhost;dbname=cmsc 127: buy and sell','root','');
 	
@@ -29,6 +26,8 @@
 	
 	//$item_idnum = $_POST['item_idnum'];
 	
+	
+	$username = "";
 	$item_name = "";
 	$item_desc = "";
 	$in_stock = "";
@@ -43,7 +42,7 @@
 	
 	
 	if($status == "sale"){
-		$stmt = $db->prepare("SELECT * FROM item_on_sale WHERE `item_idnum` = '$id'"); 
+		$stmt = $db->prepare("SELECT * FROM item_on_auction WHERE `item_idnum` = '$id'"); 
 		$stmt->execute();
 		$results_arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		
@@ -59,36 +58,17 @@
 				if($key=="book_type")$book_type = $value;
 				if($key=="format")$format = $value;
 				if($key=="author")$author = $value;
-				if($key=="status")$status = $value;
 				if($key=="item_photo")$item_photo = "assets/books/".$value;
+				
 			}
 		}
 	}
 	
-	if(($username == $seller_username) || ($status == 1)){
-		header('location: home_page.php');
-	}
 	
 	//$results_arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	
 	
-	if(isset($_POST['order_details'])){
-		
-		$date = date('Y-m-d H:i:s');
-		$default_delivery_addr = strip_tags($_POST['default_delivery_addr']);
-		$contact_no = strip_tags($_POST['contact_no']);
-		$add_message = strip_tags($_POST['add_message']);
-		$seller_username = strip_tags($_POST['seller_username']);
-		
-		
-		$stmt = $db->prepare("INSERT INTO `transaction` (`username_seller`, `username_buyer`, `transaction_date`, `location`, `contact_no`, `message`, `item_idnum`) VALUES ('$seller_username', '$username', '$date', '$default_delivery_addr', '$contact_no', '$add_message', '$id')"); 
-		$stmt->execute();
-		
-		$stmt = $db->prepare("UPDATE `item_on_sale` SET `status` = '1' WHERE `item_idnum` = '$id';");
-		$stmt->execute();
-		
-		header("Refresh:0");
-	}
+	
 
 ?>
 
@@ -167,19 +147,40 @@
                 <p><?php echo $item_desc;?></p>
 				</blockquote>
 			
-              <p class="text-black">Seller username: <strong><?php echo $seller_username?></strong></p>
+              <p class="text-black">Seller username: <strong><?php echo $username?></strong></p>
 			  <p class="text-black">Author: <strong><?php echo $author?></strong></p>
 			  <p class="text-black">Book no: <strong><?php echo $book_no?></strong></p>
 			  <p class="text-black">Format: <strong><?php echo $format?></strong></p>
 			  <p class="text-black">Condition: <strong><?php echo $condition?></strong></p>
 			  <p class="text-black">Item Price: <strong><?php echo $item_price?></strong></p>
-			  <br>
-			 <?php if (isset($_SESSION['username'])) {?>
 			  
-				<div class="" style = "text-align: center;">
-					<button type = 'submit' class="btn btn-black rounded-0" data-toggle="modal" data-target="#submitOrder">BUY</button>
-				</div>
+			 <?php if (isset($_SESSION['username'])) {?>
+			  <form id = 'order_details' method = 'post' action = ''><br>
+			  <h3 class="form-group input-group"> EDIT YOUR BILLING INFO </h3><br>
+				<div class="form-group input-group">
+					
+						<div class="input-group-prepend">
+							<span class="input-group-text"> Contact Number: </span>
+						 </div>
+						<input name="contact_no" class="form-control" type="text" value = "<?php echo $contact_no;?>" required>
+					</div>
+					<div class="form-group input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"> Meetup Location: </span>
+						 </div>
+						<input  name="default_delivery_addr" class="form-control" type="text" value = "<?php echo $default_delivery_addr;?>" required>
+					</div>
+					<div class="form-group input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"> Additional Message: </span>
+						 </div>
+						<input name="add_message" class="form-control" type="text" placeholder = "optional">
+					</div>	
+					
 				
+				<p><button type = 'submit' class="btn btn-black rounded-0">BUY</button></p>
+				
+              </form>
 			 <?php } ?>
             </div>
           </div>
@@ -229,46 +230,6 @@
     </footer>
 
   </div> <!-- .site-wrap -->
-  
-  <div class="modal fade" id="submitOrder" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-		 <form method = 'post' id = 'order_details'>
-		  <div class="modal-header">
-			<h5 class="modal-title" id="exampleModalLongTitle">EDIT YOUR BILLING INFO</h5>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			  <span aria-hidden="true">&times;</span>
-			</button>
-		  </div>
-		  <div class="modal-body">
-					<input type ='text' hidden name = "seller_username" value = "<?php echo $seller_username?>">
-					<div class="form-group input-group">
-						<div class="input-group-prepend">
-							<span class="input-group-text"> Contact Number: </span>
-						 </div>
-						<input name="contact_no" class="form-control" type="text" value = "<?php echo $contact_no;?>" required>
-					</div>
-					<div class="form-group input-group">
-						<div class="input-group-prepend">
-							<span class="input-group-text"> Meetup Location: </span>
-						 </div>
-						<input  name="default_delivery_addr" class="form-control" type="text" value = "<?php echo $default_delivery_addr;?>" required>
-					</div>
-					<div class="form-group input-group">
-						<div class="input-group-prepend">
-							<span class="input-group-text"> Additional Message: </span>
-						 </div>
-						<input name="add_message" class="form-control" type="text" placeholder = "optional">
-					</div>	
-		  </div>
-		  <div class="modal-footer">
-			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			<input name = "order_details" type="submit" class="btn btn-primary" value = "Submit Request">
-		  </div>
-		 </form>
-		</div>
-	  </div>
-	</div>
 
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/jquery-migrate-3.0.1.min.js"></script>

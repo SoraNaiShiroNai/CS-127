@@ -1,7 +1,12 @@
 <?php
 
 	session_start();
-	
+	header("Access-Control-Allow-Origin: *");
+	$running_function = $_REQUEST["function"];
+	$searchWord = "";
+	if(isset($_GET['search'])){
+		$searchWord = strip_tags($_GET['search']);
+	}
 	
 
 	$db = new PDO('mysql:host=localhost;dbname=cmsc 127: buy and sell','root','');
@@ -38,7 +43,79 @@
     <link rel="stylesheet" href="css/aos.css">
 
     <link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/bootstrap.css"/>
+    <script src="js/bootstrap.js"> </script>
+    <script src="js/jquery.js"> </script>
     
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+	<!-Personal css file to supplement bootstrap-!>
+    <link rel="stylesheet" href="css/supplementary.css"/>
+	
+	  <script>
+      function display_books_on_sale_search () {
+        if (window.XMLHttpRequest) {
+            xmlhttp=new XMLHttpRequest();
+        }
+       else {
+          xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("sale_container_search").innerHTML = this.responseText;
+            }
+          };
+        xmlhttp.open("GET", "http://localhost:80/127/home_page_handler.php?" + "function=3" + "&search=" + $('#searchQuery1').val(), true);
+        xmlhttp.send();
+      }
+
+      function display_books_on_auction_search () {
+        if (window.XMLHttpRequest) {
+            xmlhttp=new XMLHttpRequest();
+        }
+       else {
+          xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            document.getElementById('auction_container_search').innerHTML = this.responseText;
+            }
+          };
+        xmlhttp.open("GET", "http://localhost:80/127/home_page_handler.php?" + "function=4" + "&search=" + $('#searchQuery2').val(), true);
+        xmlhttp.send();
+      }
+
+	
+	  $(document).ready(function () {
+		display_books_on_sale_search();
+		display_books_on_auction_search();
+		$(document).on("keydown", "#searchQuery1", function () {
+		  display_books_on_sale_search();
+		});
+		$(document).on("keydown", "#searchQuery2", function () {
+		  display_books_on_auction_search();
+		});
+        $(document).on('click', '.on_sale', function() {
+          var location = 'item_on_sale_details.php?id=' + $(this).attr('id');
+		  window.location.href = location;
+        });
+        $(document).on('click','.clear_on_enter', function () {
+          $(this).val('');
+        });
+		$(document).on('click','#logoutButton', function () {
+			
+        });
+		$(document).on('click', '.on_auction', function() {
+          var location = 'item_on_auction_details.php?id=' + $(this).attr('id');
+		  window.location.href = location;
+        });
+      });
+
+
+    </script>
+	
   </head>
   
     <nav class="navbar navbar-expand-lg navbar-light bg-light" style="position: fixed; top: 0px;width: 100%; z-index: 1">
@@ -73,53 +150,20 @@
 
   
      
-    <div class="site-blocks-cover overlay" style="background-color: gray;" data-aos="fade" data-stellar-background-ratio="0.5">
+    <div class="site-blocks-cover overlay" style="background-color: gray; width:100%; " data-aos="fade" data-stellar-background-ratio="0.5">
      
         <div class="row align-items-center justify-content-center">
 
           <div class="col-md-12" data-aos="fade-up" data-aos-delay="400">
                         
             <div class="row mb-4">
-              <div class="col-md-7" style = "margin-top: 80px; margin-left: 50px">
-                <h1>History of Purchases</h1>
-				<?php
-				    $db = new PDO ('mysql:host = localhost; dbname=cmsc 127: buy and sell', 'root', '');
-					$query = $db->prepare ("SELECT * FROM item_on_sale");
-					$query->execute();
-					$results_arr = $query->fetchAll(PDO::FETCH_ASSOC);
+              <div class="" style = "margin-top: 80px; margin-left: 50px">
+                <h1>Search Results on Sale</h1>
+					<input type = "text" id = "searchQuery1" value = "<?php echo $searchWord ?>">
+					<div id="sale_container_search" class = "card_container" >
 					
-					foreach ($results_arr as $i => $values) {
-						foreach ($values as $key => $value) {
-							if($key=="item_idnum")
-								$item_idnum = $value;
-							if($key=="item_name")
-								$item_name = $value;
-							if($key=="item_photo")
-								$item_photo = $value;
-							if($key=="author")
-								$author = $value;
-							if($key=="item_price")
-								$item_price = $value;
-						}
-					echo "<div class='container on_sale' id='".$item_idnum."'style='background: url(assets/books/".$item_photo.");background-repeat: no-repeat;background-position: center; background-size: 100% 100%'>";
-					  echo "<div class='overlay'>";
-						echo "<div class='items'></div>";
-						echo "<div class = 'items head'>";
-						  echo "<p>".$item_name."</p>";
-						  echo "<hr>";
-						echo "</div>";
-						echo "<div class = 'items price'>";
-						  echo "<br>";
-						  echo "<p class='author'>".$author."</p>";
-						  echo "<p class='new'>$".$item_price."</p>";
-						echo "</div>";
-						echo "<div class='items cart'>";
-						  echo "<i class='fa fa-shopping-cart'></i><span>SEND BUY REQUEST</span>";
-						echo "</div>";
-					  echo "</div>";
-					echo "</div>";
-					}
-				?>
+					</div>
+				
               </div>
             </div>
           </div>
@@ -133,48 +177,13 @@
           <div class="col-md-12" data-aos="fade-up" data-aos-delay="400">
                         
             <div class="row mb-4">
-              <div class="col-md-7" style = "margin-top: 80px; margin-left: 50px" >
-				
-				
-                <h1>History of Books Sold</h1>
-				<br>
-				<table class="table" style = "color: white">
-				  <thead class="thead-dark">
-					<tr>
-					  <th scope="col">Book Name</th>
-					  <th scope="col">Price</th>
-					  <th scope="col">Date Purchased</th>
-					  <th scope="col">Method</th>
-					</tr>
-				  </thead>
-				  <tbody>
-				  
-				  <?php
-					$stmt = $db->prepare("SELECT * FROM sale_history WHERE `username` = '$username'");
-					$stmt->execute();
-					$results_arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
+              <div class="" style = "margin-top: 80px; margin-left: 50px">
+                <h1>Search Results on Auction</h1>
+					<input type = "text" id="searchQuery2" value = "<?php echo $searchWord ?>">
+					<div id="auction_container_search" class = "card_container" >
 					
-					foreach ($results_arr as $i => $values) {
-						print "<tr>";
-						foreach ($values as $key => $value) {
-							if($key=="item_name")$item_name = $value;
-							if($key=="price")$price = $value;
-							if($key=="date_sold")$date_sold = $value;
-							if($key=="method")$method = $value;
-						}?>
-						<td><?php echo $item_name;?></td>
-						<td><?php echo $price;?></td>
-						<td><?php echo $date_sold;?></td>
-						<td><?php echo $method;?></td>
-						
-						</tr>
-						<?php
-					}
-				  ?>
-					
-				  </tbody>
-				</table>
-               
+					</div>
+				
               </div>
             </div>
           </div>
