@@ -150,6 +150,42 @@
       
     }
   }
+  
+  function sale_history () {
+	global $username;
+	$searchWord = strip_tags($_REQUEST['search']);
+    $db = new PDO ('mysql:host = localhost; dbname=cmsc 127: buy and sell', 'root', '');
+    $query = $db->prepare ("SELECT * FROM sale_history WHERE `username` = '$username' AND`item_name` LIKE '%$searchWord%'");
+    $query->execute();
+	//$query->DebugDumpParams();
+    $i = 0;
+    while ($result = $query->fetch()) {
+			echo "<tr>";
+				echo "<td>".$result['item_name']."</td>";
+				echo "<td>".$result['price']."</td>";
+				echo "<td>".$result['date_purchased']."</td>";
+				echo "<td>".$result['method']."</td>";
+			echo "</tr>";
+    }
+  }
+  
+  function purchase_history () {
+	global $username;
+	$searchWord = strip_tags($_REQUEST['search']);
+    $db = new PDO ('mysql:host = localhost; dbname=cmsc 127: buy and sell', 'root', '');
+    $query = $db->prepare ("SELECT * FROM purchase_history WHERE `username` = '$username' AND`item_name` LIKE '%$searchWord%'");
+    $query->execute();
+	//$query->DebugDumpParams();
+    $i = 0;
+    while ($result = $query->fetch()) {
+			echo "<tr>";
+				echo "<td>".$result['item_name']."</td>";
+				echo "<td>".$result['price']."</td>";
+				echo "<td>".$result['date_purchased']."</td>";
+				echo "<td>".$result['method']."</td>";
+			echo "</tr>";
+    }
+  }
 
   switch ($running_function) {
     case 1:
@@ -165,7 +201,10 @@
 	  display_books_on_auction_search();
       break;
     case 5:
-
+	  purchase_history();
+      break;
+	case 6:
+	  sale_history();
       break;
   }
 

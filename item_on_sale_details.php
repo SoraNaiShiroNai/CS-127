@@ -88,6 +88,7 @@
 		
 		//INSERT MAILER HERE
 		//SEND TO BUYER AND SELLER
+		?> <script> alert("Order has been processed. Please wait for the delivery.."); </script> <?php
 		
 		header("Refresh:0");
 	}
@@ -127,7 +128,7 @@
   
   
   <nav class="navbar navbar-expand-lg navbar-light bg-light" style="position: fixed; top: 0px;width: 100%; z-index: 1">
-      <b><a class="navbar-brand nav_logo" href="#">Readers'<span style='color: #AC75BD'>Exchange</span></a></b>
+      <b><a class="navbar-brand nav_logo" href="home_page.php">Readers'<span style='color: #AC75BD'>Exchange</span></a></b>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
 

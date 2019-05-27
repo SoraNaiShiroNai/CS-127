@@ -39,17 +39,81 @@
     <link rel="stylesheet" href="css/aos.css">
 
     <link rel="stylesheet" href="css/style.css">
+	
+	<link rel="stylesheet" href="css/bootstrap.css"/>
+    <script src="js/bootstrap.js"> </script>
+    <script src="js/jquery.js"> </script>
+
+    <!-Personal css file to supplement bootstrap-!>
+    <link rel="stylesheet" href="css/supplementary.css"/>
+	
+	<script>
+      function display_purchase () {
+        if (window.XMLHttpRequest) {
+            xmlhttp=new XMLHttpRequest();
+        }
+       else {
+          xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            document.getElementById('purchase_history_container').innerHTML = this.responseText;
+            }
+          };
+        xmlhttp.open("GET", "http://localhost:80/127/home_page_handler.php?" + "function=5" + "&search=" + $('#search_bar').val(), true);
+        xmlhttp.send();
+      }
+
+      function display_sale () {
+        if (window.XMLHttpRequest) {
+            xmlhttp=new XMLHttpRequest();
+        }
+       else {
+          xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            document.getElementById('sale_history_container').innerHTML = this.responseText;
+            }
+          };
+        xmlhttp.open("GET", "http://localhost:80/127/home_page_handler.php?" + "function=6" + "&search=" + $('#search_bar').val(), true);
+        xmlhttp.send();
+      }
+
+
+
+      $(document).ready(function () {
+		$(document).on("keydown", "#search_bar", function () {
+		  display_purchase();
+		  display_sale();
+		});
+        $(document).on('click','.clear_on_enter', function () {
+          $(this).val('');
+        });
+		$(document).on('click','#logoutButton', function () {
+			
+        });
+		$(document).on('click','#searchBTN', function () {
+			display_purchase();
+			display_sale();
+        });
+      });
+
+
+    </script>
     
   </head>
   
     <nav class="navbar navbar-expand-lg navbar-light bg-light" style="position: fixed; top: 0px;width: 100%; z-index: 1">
-      <b><a class="navbar-brand nav_logo" href="#">Readers'<span style='color: #AC75BD'>Exchange</span></a></b>
+      <b><a class="navbar-brand nav_logo" href="home_page.php">Readers'<span style='color: #AC75BD'>Exchange</span></a></b>
+	  <b><a style = "padding-left: 0%" class="navbar-brand nav_link" href="#pH">Purchase History</a></b>
+	  <b><a style = "padding-left: 0%" class="navbar-brand nav_link" href="#sH">Sale History</a></b>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
         <form class="form-inline my-2 my-lg-0" style="width: 100%; padding-left: 50%;">
           <input type='text' id='search_bar' style=" border-style: solid; border-width: 2px; border-color: grey; padding-left: 10px; width: 60%; padding-top: 2px">
-          <button class="btn btn-secondary my-2 my-sm-0 btn-sm" style="border-radius: 0 20px 20px 0; margin-right: 2%; padding-right: 15px"> Search </button>
+          <button id = "searchBTN" class="btn btn-secondary my-2 my-sm-0 btn-sm" style="border-radius: 0 20px 20px 0; margin-right: 2%; padding-right: 15px"> Search </button>
 		  
         </form>
       </div>
@@ -74,14 +138,14 @@
 
   
      
-    <div class="site-blocks-cover overlay" style="background-color: gray;" data-aos="fade" data-stellar-background-ratio="0.5">
+    <div id = "pH" class="site-blocks-cover overlay" style="background-color: gray;" data-aos="fade" data-stellar-background-ratio="0.5">
      
         <div class="row align-items-center justify-content-center">
 
           <div class="col-md-12" data-aos="fade-up" data-aos-delay="400">
                         
             <div class="row mb-4">
-              <div class="col-md-7" style = "margin-top: 80px; margin-left: 50px">
+              <div class="col-md-7"  style = "margin-top: 80px; margin-left: 50px">
                 <h1>History of Purchases</h1>
 				<br>
 				<table class="table" style = "color: white">
@@ -93,31 +157,31 @@
 					  <th scope="col">Method</th>
 					</tr>
 				  </thead>
-				  <tbody>
+				  <tbody id = "purchase_history_container">
 				  
-				  <?php
-					$stmt = $db->prepare("SELECT * FROM purchase_history WHERE `username` = '$username'");
-					$stmt->execute();
-					$results_arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
-					
-					foreach ($results_arr as $i => $values) {
-						print "<tr>";
-						foreach ($values as $key => $value) {
-							if($key=="item_name")$item_name = $value;
-							if($key=="price")$price = $value;
-							if($key=="date_purchased")$date_purchased = $value;
-							if($key=="method")$method = $value;
-						}?>
-						<td><?php echo $item_name;?></td>
-						<td><?php echo $price;?></td>
-						<td><?php echo $date_purchased;?></td>
-						<td><?php echo $method;?></td>
+				  
+					  <?php
+						$stmt = $db->prepare("SELECT * FROM purchase_history WHERE `username` = '$username'");
+						$stmt->execute();
+						$results_arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
 						
-						</tr>
-						<?php
-					}
-				  ?>
-					
+						foreach ($results_arr as $i => $values) {
+							print "<tr>";
+							foreach ($values as $key => $value) {
+								if($key=="item_name")$item_name = $value;
+								if($key=="price")$price = $value;
+								if($key=="date_purchased")$date_purchased = $value;
+								if($key=="method")$method = $value;
+							}?>
+							<td><?php echo $item_name;?></td>
+							<td><?php echo $price;?></td>
+							<td><?php echo $date_purchased;?></td>
+							<td><?php echo $method;?></td>
+							
+							</tr>
+							<?php
+						}
+					  ?>
 				  </tbody>
 				</table>
                
@@ -127,7 +191,7 @@
         </div>
     </div>  
 	
-	 <div class="site-blocks-cover overlay" style="background-color: white;" data-aos="fade" data-stellar-background-ratio="0.5">
+	 <div  id = "sH" class="site-blocks-cover overlay" style="background-color: white;" data-aos="fade" data-stellar-background-ratio="0.5">
      
         <div class="row align-items-center justify-content-center">
 
@@ -149,30 +213,30 @@
 					</tr>
 				  </thead>
 				  <tbody>
-				  
-				  <?php
-					$stmt = $db->prepare("SELECT * FROM sale_history WHERE `username` = '$username'");
-					$stmt->execute();
-					$results_arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
-					
-					foreach ($results_arr as $i => $values) {
-						print "<tr>";
-						foreach ($values as $key => $value) {
-							if($key=="item_name")$item_name = $value;
-							if($key=="price")$price = $value;
-							if($key=="date_sold")$date_sold = $value;
-							if($key=="method")$method = $value;
-						}?>
-						<td><?php echo $item_name;?></td>
-						<td><?php echo $price;?></td>
-						<td><?php echo $date_sold;?></td>
-						<td><?php echo $method;?></td>
+					<div id = "sale_history_container">
+					  <?php
+						$stmt = $db->prepare("SELECT * FROM sale_history WHERE `username` = '$username'");
+						$stmt->execute();
+						$results_arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
 						
-						</tr>
-						<?php
-					}
-				  ?>
-					
+						foreach ($results_arr as $i => $values) {
+							print "<tr>";
+							foreach ($values as $key => $value) {
+								if($key=="item_name")$item_name = $value;
+								if($key=="price")$price = $value;
+								if($key=="date_sold")$date_sold = $value;
+								if($key=="method")$method = $value;
+							}?>
+							<td><?php echo $item_name;?></td>
+							<td><?php echo $price;?></td>
+							<td><?php echo $date_sold;?></td>
+							<td><?php echo $method;?></td>
+							
+							</tr>
+							<?php
+						}
+					  ?>
+					</div>
 				  </tbody>
 				</table>
                
