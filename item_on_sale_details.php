@@ -80,12 +80,14 @@
 		$add_message = strip_tags($_POST['add_message']);
 		$seller_username = strip_tags($_POST['seller_username']);
 		
+		//$stmt = $db->prepare("UPDATE `item_on_sale` SET `status` = '1' WHERE `item_idnum` = '$id';");
+		//$stmt->execute();
 		
-		$stmt = $db->prepare("INSERT INTO `transaction` (`username_seller`, `username_buyer`, `transaction_date`, `location`, `contact_no`, `message`, `item_idnum`) VALUES ('$seller_username', '$username', '$date', '$default_delivery_addr', '$contact_no', '$add_message', '$id')"); 
+		$stmt = $db->prepare("INSERT INTO `purchase_history` (`username`, `item_name`, `price`, `date_purchased`, `method`, `seller_username`) VALUES ('$username', '$item_name', '$item_price', '$date', 'SALE', '$seller_username')"); 
 		$stmt->execute();
 		
-		$stmt = $db->prepare("UPDATE `item_on_sale` SET `status` = '1' WHERE `item_idnum` = '$id';");
-		$stmt->execute();
+		//INSERT MAILER HERE
+		//SEND TO BUYER AND SELLER
 		
 		header("Refresh:0");
 	}
@@ -173,11 +175,13 @@
 			  <p class="text-black">Format: <strong><?php echo $format?></strong></p>
 			  <p class="text-black">Condition: <strong><?php echo $condition?></strong></p>
 			  <p class="text-black">Item Price: <strong><?php echo $item_price?></strong></p>
+			  <p class="text-black">Availability: <strong><?php echo $in_stock?></strong></p>
+			  
 			  <br>
 			 <?php if (isset($_SESSION['username'])) {?>
 			  
 				<div class="" style = "text-align: center;">
-					<button type = 'submit' class="btn btn-black rounded-0" data-toggle="modal" data-target="#submitOrder">BUY</button>
+					<button type = 'submit' <?php if($in_stock == 'out-of-stock') echo "disabled" ?> class="btn btn-black rounded-0" data-toggle="modal" data-target="#submitOrder">BUY</button>
 				</div>
 				
 			 <?php } ?>

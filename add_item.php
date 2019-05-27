@@ -26,7 +26,7 @@
 			$stmt->execute();
 		}
 		else if($status == "auction"){
-			$stmt = $db->prepare("INSERT INTO `item_on_auction` (`seller_username`, `item_name`, `item_desc`, `item_price`, `condition`, `in_stock`, `book_no`, `format`, `book_type`, `author`) VALUES ('$username', '$item_name', '$item_desc', '$item_price', '$condition', '$in_stock', '$book_no', '$format', '$book_type', '$author');");
+			$stmt = $db->prepare("INSERT INTO `item_on_auction` (`seller_username`, `item_name`, `item_desc`, `item_price`, `condition`, `in_stock`, `book_no`, `format`, `book_type`, `author`, `highest_bid`, `status`) VALUES ('$username', '$item_name', '$item_desc', '$item_price', '$condition', '$in_stock', '$book_no', '$format', '$book_type', '$author', '$item_price', 'Ready');");
 			$stmt->execute();
 		}
 		

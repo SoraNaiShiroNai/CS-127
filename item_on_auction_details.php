@@ -2,7 +2,10 @@
 
 	session_start();
 	
-	$username = $_SESSION['username'];
+	$username = "";
+	if(isset($_SESSION['username'])){
+		$username = $_SESSION['username'];
+	}
 
 	$db = new PDO('mysql:host=localhost;dbname=cmsc 127: buy and sell','root','');
 	
@@ -26,8 +29,6 @@
 	
 	//$item_idnum = $_POST['item_idnum'];
 	
-	
-	$username = "";
 	$item_name = "";
 	$item_desc = "";
 	$in_stock = "";
@@ -58,17 +59,43 @@
 				if($key=="book_type")$book_type = $value;
 				if($key=="format")$format = $value;
 				if($key=="author")$author = $value;
+				if($key=="status")$status = $value;
+				if($key=="highest_bid")$highest_bid = $value;
+				if($key=="highest_bidder_username")$highest_bidder_username = $value;
 				if($key=="item_photo")$item_photo = "assets/books/".$value;
-				
 			}
 		}
 	}
 	
+	if(($username == $seller_username)){
+		header('location: home_page.php');
+	}
 	
 	//$results_arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	
 	
-	
+	if(isset($_POST['order_details'])){
+		
+		$bid = $_POST['bid'];
+		if($bid > $highest_bid){
+			$date = date('Y-m-d H:i:s');
+			$seller_username = strip_tags($_POST['seller_username']);
+			
+			$stmt = $db->prepare("UPDATE `item_on_auction` SET `highest_bid` = '$bid', `highest_bidder_username` = '$username' WHERE `item_idnum` = '$id';");
+			$stmt->execute();
+			
+			//$stmt = $db->prepare("INSERT INTO `purchase_history` (`username`, `item_name`, `price`, `date_purchased`, `method`, `seller_username`) VALUES ('$username', '$item_name', '$item_price', '$date', 'SALE', '$seller_username')"); 
+			//$stmt->execute();
+			
+			//INSERT MAILER HERE
+			//SEND TO BUYER AND SELLER
+			
+			header("Refresh:0");
+		}else{
+			?> <script> alert("Please enter a higher bid"); </script>
+			<?php
+		}
+	}
 
 ?>
 
@@ -147,40 +174,23 @@
                 <p><?php echo $item_desc;?></p>
 				</blockquote>
 			
-              <p class="text-black">Seller username: <strong><?php echo $username?></strong></p>
+              <p class="text-black">Seller username: <strong><?php echo $seller_username?></strong></p>
 			  <p class="text-black">Author: <strong><?php echo $author?></strong></p>
 			  <p class="text-black">Book no: <strong><?php echo $book_no?></strong></p>
 			  <p class="text-black">Format: <strong><?php echo $format?></strong></p>
 			  <p class="text-black">Condition: <strong><?php echo $condition?></strong></p>
-			  <p class="text-black">Item Price: <strong><?php echo $item_price?></strong></p>
+			  <p class="text-black">Starting Price: <strong><?php echo $item_price?></strong></p>
+			  <hr>
+			  <p class="text-black">Status: <strong><?php echo $status?></strong></p>
+			  <p class="text-black">Highest Bid: <strong><?php echo $highest_bid?></strong></p>
+			  <p class="text-black">Highest Bidder: <strong><?php echo $highest_bidder_username?></strong></p>
+			  <br>
+			<?php if (isset($_SESSION['username']) && $_SESSION['username']!=$seller_username) { ?>
 			  
-			 <?php if (isset($_SESSION['username'])) {?>
-			  <form id = 'order_details' method = 'post' action = ''><br>
-			  <h3 class="form-group input-group"> EDIT YOUR BILLING INFO </h3><br>
-				<div class="form-group input-group">
-					
-						<div class="input-group-prepend">
-							<span class="input-group-text"> Contact Number: </span>
-						 </div>
-						<input name="contact_no" class="form-control" type="text" value = "<?php echo $contact_no;?>" required>
-					</div>
-					<div class="form-group input-group">
-						<div class="input-group-prepend">
-							<span class="input-group-text"> Meetup Location: </span>
-						 </div>
-						<input  name="default_delivery_addr" class="form-control" type="text" value = "<?php echo $default_delivery_addr;?>" required>
-					</div>
-					<div class="form-group input-group">
-						<div class="input-group-prepend">
-							<span class="input-group-text"> Additional Message: </span>
-						 </div>
-						<input name="add_message" class="form-control" type="text" placeholder = "optional">
-					</div>	
-					
+				<div class="" style = "text-align: center;">
+					<button type = 'submit' <?php if($status == "Closed") echo "disabled"; ?> class="btn btn-black rounded-0" data-toggle="modal" data-target="#submitOrder">BID</button>
+				</div>
 				
-				<p><button type = 'submit' class="btn btn-black rounded-0">BUY</button></p>
-				
-              </form>
 			 <?php } ?>
             </div>
           </div>
@@ -230,6 +240,34 @@
     </footer>
 
   </div> <!-- .site-wrap -->
+  
+  <div class="modal fade" id="submitOrder" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+		 <form method = 'post' id = 'order_details'>
+		  <div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLongTitle">PLEASE ENTER YOUR BID</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+					
+					<div class="form-group input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"> Bid: </span>
+						 </div>
+						<input name="bid" class="form-control" type="number" placeholder = "Enter a bid higher than the highest" value = "<?php echo ($highest_bid + 100) ?>" ;>
+					</div>	
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<input name = "order_details" type="submit" class="btn btn-primary" value = "Submit Request">
+		  </div>
+		 </form>
+		</div>
+	  </div>
+	</div>
 
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/jquery-migrate-3.0.1.min.js"></script>

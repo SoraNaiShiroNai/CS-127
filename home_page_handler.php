@@ -126,7 +126,7 @@
 	//$query->DebugDumpParams();
     $i = 0;
     while ($result = $query->fetch()) {
-      if ($i != 8) {
+     
 		if((($result['seller_username']) != ($username)) && $result['status'] != 1){
 			echo "<div class='container on_sale' id='".$result['item_idnum']."'style='background: url(assets/books/".$result['item_photo'].");background-repeat: no-repeat;background-position: center; background-size: 100% 100%'>";
 			  echo "<div class='overlay'>";
@@ -147,10 +147,7 @@
 			echo "</div>";
 			$i+=1;
 		}
-      }
-      else {
-        break;
-      }
+      
     }
   }
 

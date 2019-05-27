@@ -42,6 +42,9 @@
 			if($key=="format")$format = $value;
 			if($key=="author")$author = $value;
 			if($key=="item_photo")$item_photo = $value;
+			if($key=="highest_bidder_username")$highest_bidder_username = $value;
+			if($key=="highest_bid")$highest_bid = $value;
+			if($key=="status")$status = $value;
 		}
 	}
 	
@@ -51,22 +54,24 @@
 	
 	if(isset($_POST['editItem'])){
 		
-		$target_dir = "assets/books/";
-		$target_file = $target_dir . basename($_FILES["uploaded_file"]["name"]);
-		$item_name = strip_tags($_POST['item_name']);
-		$item_desc = strip_tags($_POST['item_desc']);
-		$item_price = strip_tags($_POST['item_price']);
-		$condition = strip_tags($_POST['condition']);
-		$in_stock = strip_tags($_POST['in_stock']);
-		$book_no = strip_tags($_POST['book_no']);
-		$format = strip_tags($_POST['format']);
-		$book_type = strip_tags($_POST['book_type']);
-		$author = strip_tags($_POST['author']);
-		$item_photo = strip_tags($_FILES['uploaded_file']['name']);
-		
-		
-			$stmt = $db->prepare("UPDATE `item_on_auction` SET `item_name` = '$item_name', `item_desc` = '$item_desc', `item_price` = '$item_price', `condition` = '$condition', `in_stock` = '$in_stock', `book_no` = '$book_no', `format` = '$format', `book_type` = '$book_type', `author` = '$author', `item_photo` = '$item_photo' WHERE `item_idnum` = '$id';");
-			$stmt->execute();
+		if($status != "Closed"){
+			$target_dir = "assets/books/";
+			$target_file = $target_dir . basename($_FILES["uploaded_file"]["name"]);
+			$item_name = strip_tags($_POST['item_name']);
+			$item_desc = strip_tags($_POST['item_desc']);
+			$item_price = strip_tags($_POST['item_price']);
+			$condition = strip_tags($_POST['condition']);
+			$in_stock = strip_tags($_POST['in_stock']);
+			$book_no = strip_tags($_POST['book_no']);
+			$format = strip_tags($_POST['format']);
+			$book_type = strip_tags($_POST['book_type']);
+			$author = strip_tags($_POST['author']);
+			$item_photo = strip_tags($_FILES['uploaded_file']['name']);
+			
+			
+				$stmt = $db->prepare("UPDATE `item_on_auction` SET `item_name` = '$item_name', `item_desc` = '$item_desc', `item_price` = '$item_price', `condition` = '$condition', `in_stock` = '$in_stock', `book_no` = '$book_no', `format` = '$format', `book_type` = '$book_type', `author` = '$author', `item_photo` = '$item_photo' WHERE `item_idnum` = '$id';");
+				$stmt->execute();
+		}
 	}
 	
 	if(isset($_POST['deleteItem'])){
@@ -271,7 +276,7 @@
 					<div class = "row">
 						<div class = "col">
 							<!-- Button trigger modal -->
-							<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal">
+							<button <?php if($status=="Open" || $status == "Closed") echo "disabled"; ?> type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal">
 							  Delete from Database
 							</button>
 						</div>
