@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 28, 2019 at 02:49 AM
+-- Generation Time: May 28, 2019 at 06:03 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.1
 
@@ -49,6 +49,19 @@ CREATE TABLE `bid_details` (
   `bidder_username` varchar(20) COLLATE utf8mb4_bin NOT NULL,
   `bid` float(16,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+--
+-- Dumping data for table `bid_details`
+--
+
+INSERT INTO `bid_details` (`item_idnum`, `bidder_username`, `bid`) VALUES
+(1, 'Takishima', 200.00),
+(9, 'Takishima', 99090192.00),
+(8, 'Takishima', 440110.00),
+(7, 'Takishima', 3000100.00),
+(9, 'Akabane', 99090288.00),
+(7, 'Akabane', 3000200.00),
+(6, 'Akabane', 530400.00);
 
 -- --------------------------------------------------------
 
@@ -104,7 +117,11 @@ CREATE TABLE `item_on_auction` (
 --
 
 INSERT INTO `item_on_auction` (`item_idnum`, `seller_username`, `book_type`, `item_name`, `author`, `item_desc`, `item_price`, `condition`, `in_stock`, `item_photo`, `book_no`, `format`, `highest_bidder_username`, `highest_bid`, `status`) VALUES
-(1, '87687', 2, 'The Cat in the Hat', 'Dr. Seuss', 'Sample book on auction', 12.95, 'brandnew', 'available', 'cith.jpg', '9788415745549', 'hardcover', 'Akabane', 0.00, 'Ready');
+(1, '87687', 2, 'The Cat in the Hat', 'Dr. Seuss', 'Sample book on auction', 12.95, 'brandnew', 'available', 'cith.jpg', '9788415745549', 'hardcover', 'Takishima', 200.00, 'Open'),
+(6, 'Takishima', 1, 'Final Fantasy', 'Min Jin Lee', '23', 530000.00, 'brandnew', 'available', '990b5509d39a67e51c963310b0329be04c6eef28.png', 'ISBN32131', 'hardcover', 'Akabane', 530400.00, 'Open'),
+(7, 'Dororo', 1, 'Karin', 'Naruto', 'The Beautiful Megane', 3000000.00, 'brandnew', 'available', '5fdbdda887b48c9644f70afa6d5aafd8c5a622a4.png', 'ISBN448181', 'hardcover', 'Akabane', 3000200.00, 'Open'),
+(8, 'Dororo', 1, 'That girl', 'no idea', 'That girl', 440010.00, 'brandnew', 'available', 'c73acbe1a41c3acaf4c437f7af5be397944ef042.png', 'ISBN41323', 'hardcover', 'Takishima', 440110.00, 'Open'),
+(9, 'Dororo', 1, 'Red Hot Habanero', 'Naruto', 'The greatest mum', 99090088.00, 'brandnew', 'available', '1e26afa9ffa4cba74de11a8f44d90cf62b86e53e.png', 'ISBN0000001', 'hardcover', 'Akabane', 99090288.00, 'Open');
 
 -- --------------------------------------------------------
 
@@ -150,7 +167,9 @@ INSERT INTO `item_on_sale` (`item_idnum`, `seller_username`, `book_type`, `item_
 (46, 'Takishima', 1, '2', '', '8', 8.00, 'brandnew', 'available', '', '88', 'audiocd', 0),
 (47, 'Takishima', 8, 'Love is War', 'Kaguya sama', 'A Book about the love of two highschool kids', 1000.00, 'brandnew', 'limited', '', 'ISBN990139', 'ebook', 0),
 (48, 'Takishima', 8, 'Love is War', 'Kaguya sama', 'A Book about the love of two highschool kids', 1000.00, 'brandnew', 'limited', '', 'ISBN990139', 'ebook', 0),
-(49, 'Takishima', 1, 'SSSSSSSSSSSSSSSSSS', '', '', 0.00, 'brandnew', 'available', '6e1a545da8bd43db36ec3f3ae0b356ce4793d9d8.png', '', 'hardcover', 0);
+(49, 'Takishima', 1, 'SSSSSSSSSSSSSSSSSS', '', '', 0.00, 'brandnew', 'available', '6e1a545da8bd43db36ec3f3ae0b356ce4793d9d8.png', '', 'hardcover', 0),
+(50, 'Dororo', 1, 'Helvette Jobigt', 'Pewdiepie', 'Mr Beast', 500.00, 'brandnew', 'available', '575052a44efcd36baaef9214e551701302af942b.png', '299', 'hardcover', 0),
+(51, 'Dororo', 1, 'Kaguya', 'Naruto', 'That Loli Kaguya', 70000001010.00, 'brandnew', 'available', '2071f2d181d751d15d6e2d0e9ef6562c4686feb9.png', 'ISBN99999999', 'hardcover', 0);
 
 -- --------------------------------------------------------
 
@@ -164,25 +183,72 @@ CREATE TABLE `purchase_history` (
   `price` float(16,2) NOT NULL,
   `date_purchased` date NOT NULL,
   `method` enum('SALE','AUCTION') COLLATE utf8mb4_bin NOT NULL,
-  `seller_username` varchar(20) COLLATE utf8mb4_bin NOT NULL
+  `seller_username` varchar(20) COLLATE utf8mb4_bin NOT NULL,
+  `delivery_status` tinyint(1) NOT NULL,
+  `delivery_address` varchar(200) COLLATE utf8mb4_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 --
 -- Dumping data for table `purchase_history`
 --
 
-INSERT INTO `purchase_history` (`username`, `item_name`, `price`, `date_purchased`, `method`, `seller_username`) VALUES
-('Dororo', '$item_na123123131me', 31.00, '2019-05-27', 'SALE', 'Takishima'),
-('Dororo', '$item_na123123131me', 31.00, '2019-05-27', 'SALE', 'Takishima'),
-('Dororo', '$item_na123123131me', 31.00, '2019-05-27', 'SALE', 'Takishima'),
-('Dororo', 'Toyota Supra GT', 5300200.00, '2019-05-27', 'SALE', 'SoraNai_ShiroNai'),
-('Dororo', '$item_name', 0.00, '2019-05-27', 'SALE', 'SoraNai_ShiroNai'),
-('Dororo', '$item_name', 0.00, '2019-05-27', 'SALE', 'Takishima'),
-('Dororo', '2', 8.00, '2019-05-27', 'SALE', 'Takishima'),
-('Dororo', 'Cream-O', 4000000.00, '2019-05-27', 'SALE', 'Takishima'),
-('Dororo', 'qweqwe', 123.00, '2019-05-27', 'SALE', 'Takishima'),
-('sora', 'Cream-O', 4000000.00, '2019-05-28', 'SALE', 'Takishima'),
-('sora', 'Cream-O', 4000000.00, '2019-05-28', 'SALE', 'Takishima');
+INSERT INTO `purchase_history` (`username`, `item_name`, `price`, `date_purchased`, `method`, `seller_username`, `delivery_status`, `delivery_address`) VALUES
+('Dororo', '$item_na123123131me', 31.00, '2019-05-27', 'SALE', 'Takishima', 0, ''),
+('Dororo', '$item_na123123131me', 31.00, '2019-05-27', 'SALE', 'Takishima', 0, ''),
+('Dororo', '$item_na123123131me', 31.00, '2019-05-27', 'SALE', 'Takishima', 0, ''),
+('Dororo', 'Toyota Supra GT', 5300200.00, '2019-05-27', 'SALE', 'SoraNai_ShiroNai', 0, ''),
+('Dororo', '$item_name', 0.00, '2019-05-27', 'SALE', 'SoraNai_ShiroNai', 0, ''),
+('Dororo', '$item_name', 0.00, '2019-05-27', 'SALE', 'Takishima', 0, ''),
+('Dororo', '2', 8.00, '2019-05-27', 'SALE', 'Takishima', 0, ''),
+('Dororo', 'Cream-O', 4000000.00, '2019-05-27', 'SALE', 'Takishima', 0, ''),
+('Dororo', 'qweqwe', 123.00, '2019-05-27', 'SALE', 'Takishima', 0, ''),
+('sora', 'Cream-O', 4000000.00, '2019-05-28', 'SALE', 'Takishima', 0, ''),
+('sora', 'Cream-O', 4000000.00, '2019-05-28', 'SALE', 'Takishima', 0, ''),
+('Dororo', '$item_name', 0.00, '2019-05-28', 'SALE', 'SoraNai_ShiroNai', 0, ''),
+('Dororo', '$item_name', 0.00, '2019-05-28', 'SALE', 'SoraNai_ShiroNai', 0, ''),
+('Dororo', '$item_name', 0.00, '2019-05-28', 'SALE', 'SoraNai_ShiroNai', 0, ''),
+('Dororo', '$item_name', 0.00, '2019-05-28', 'SALE', 'SoraNai_ShiroNai', 0, ''),
+('Dororo', '2', 8.00, '2019-05-28', 'SALE', 'Takishima', 0, ''),
+('Dororo', '2', 8.00, '2019-05-28', 'SALE', 'Takishima', 0, ''),
+('Dororo', '2', 8.00, '2019-05-28', 'SALE', 'Takishima', 0, ''),
+('Dororo', '2', 8.00, '2019-05-28', 'SALE', 'Takishima', 0, ''),
+('Dororo', '$item_name', 0.00, '2019-05-28', 'SALE', 'Takishima', 0, ''),
+('Dororo', '$item_name', 0.00, '2019-05-28', 'SALE', 'Takishima', 0, ''),
+('Dororo', '$item_name', 0.00, '2019-05-28', 'SALE', 'Takishima', 0, ''),
+('Dororo', '$item_name', 0.00, '2019-05-28', 'SALE', 'Takishima', 0, ''),
+('Dororo', '$item_name', 0.00, '2019-05-28', 'SALE', 'Takishima', 0, ''),
+('Dororo', '$item_name', 0.00, '2019-05-28', 'SALE', 'Takishima', 0, ''),
+('Takishima', 'Toyota Supra GT', 5300200.00, '2019-05-28', 'SALE', 'SoraNai_ShiroNai', 0, ''),
+('Akabane', 'qweqwe', 123.00, '2019-05-28', 'SALE', 'Takishima', 0, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sale_history`
+--
+
+CREATE TABLE `sale_history` (
+  `username` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `item_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `price` float(16,2) NOT NULL,
+  `date_sold` date NOT NULL,
+  `buyer_username` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `method` enum('SALE','AUCTION') COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `sale_history`
+--
+
+INSERT INTO `sale_history` (`username`, `item_name`, `price`, `date_sold`, `buyer_username`, `method`) VALUES
+('Takishima', '$item_name', 0.00, '2019-05-28', 'Dororo', 'SALE'),
+('Takishima', '$item_name', 0.00, '2019-05-28', 'Dororo', 'SALE'),
+('Takishima', '$item_name', 0.00, '2019-05-28', 'Dororo', 'SALE'),
+('Takishima', '$item_name', 0.00, '2019-05-28', 'Dororo', 'SALE'),
+('Takishima', '$item_name', 0.00, '2019-05-28', 'Dororo', 'SALE'),
+('Takishima', '$item_name', 0.00, '2019-05-28', 'Dororo', 'SALE'),
+('SoraNai_ShiroNai', 'Toyota Supra GT', 5300200.00, '2019-05-28', 'Takishima', 'SALE'),
+('Takishima', 'qweqwe', 123.00, '2019-05-28', 'Akabane', 'SALE');
 
 -- --------------------------------------------------------
 
@@ -262,8 +328,7 @@ ALTER TABLE `book_type`
 ALTER TABLE `item_on_auction`
   ADD PRIMARY KEY (`item_idnum`),
   ADD KEY `item_on_auction_ibfk_1` (`book_type`),
-  ADD KEY `item_on_auction_ibfk_2` (`seller_username`),
-  ADD KEY `item_on_auction_ibfk_3` (`highest_bidder_username`);
+  ADD KEY `item_on_auction_ibfk_2` (`seller_username`);
 
 --
 -- Indexes for table `item_on_sale`
@@ -279,6 +344,12 @@ ALTER TABLE `item_on_sale`
 ALTER TABLE `purchase_history`
   ADD KEY `username` (`username`),
   ADD KEY `seller_username` (`seller_username`);
+
+--
+-- Indexes for table `sale_history`
+--
+ALTER TABLE `sale_history`
+  ADD KEY `username` (`username`);
 
 --
 -- Indexes for table `transaction`
@@ -309,13 +380,13 @@ ALTER TABLE `book_type`
 -- AUTO_INCREMENT for table `item_on_auction`
 --
 ALTER TABLE `item_on_auction`
-  MODIFY `item_idnum` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `item_idnum` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `item_on_sale`
 --
 ALTER TABLE `item_on_sale`
-  MODIFY `item_idnum` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `item_idnum` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- Constraints for dumped tables
@@ -342,6 +413,12 @@ ALTER TABLE `item_on_auction`
 --
 ALTER TABLE `purchase_history`
   ADD CONSTRAINT `purchase_history_ibfk_1` FOREIGN KEY (`username`) REFERENCES `user` (`username`);
+
+--
+-- Constraints for table `sale_history`
+--
+ALTER TABLE `sale_history`
+  ADD CONSTRAINT `sale_history_ibfk_1` FOREIGN KEY (`username`) REFERENCES `user` (`username`);
 
 --
 -- Constraints for table `transaction`
