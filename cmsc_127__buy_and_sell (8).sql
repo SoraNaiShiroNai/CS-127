@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 28, 2019 at 06:41 AM
+-- Generation Time: May 28, 2019 at 03:19 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.1
 
@@ -117,11 +117,8 @@ CREATE TABLE `item_on_auction` (
 --
 
 INSERT INTO `item_on_auction` (`item_idnum`, `seller_username`, `book_type`, `item_name`, `author`, `item_desc`, `item_price`, `condition`, `in_stock`, `item_photo`, `book_no`, `format`, `highest_bidder_username`, `highest_bid`, `status`) VALUES
-(1, '87687', 2, 'The Cat in the Hat', 'Dr. Seuss', 'Sample book on auction', 12.95, 'brandnew', 'available', 'cith.jpg', '9788415745549', 'hardcover', 'Takishima', 200.00, 'Open'),
-(6, 'Takishima', 1, 'Final Fantasy', 'Min Jin Lee', '23', 530000.00, 'brandnew', 'available', '990b5509d39a67e51c963310b0329be04c6eef28.png', 'ISBN32131', 'hardcover', 'Akabane', 530400.00, 'Open'),
-(7, 'Dororo', 1, 'Karin', 'Naruto', 'The Beautiful Megane', 3000000.00, 'brandnew', 'available', '5fdbdda887b48c9644f70afa6d5aafd8c5a622a4.png', 'ISBN448181', 'hardcover', 'Akabane', 3000200.00, 'Open'),
-(8, 'Dororo', 1, 'That girl', 'no idea', 'That girl', 440010.00, 'brandnew', 'available', 'c73acbe1a41c3acaf4c437f7af5be397944ef042.png', 'ISBN41323', 'hardcover', 'Takishima', 440110.00, 'Open'),
-(9, 'Dororo', 1, 'Red Hot Habanero', 'Naruto', 'The greatest mum', 99090088.00, 'brandnew', 'available', '1e26afa9ffa4cba74de11a8f44d90cf62b86e53e.png', 'ISBN0000001', 'hardcover', 'Akabane', 99090288.00, 'Open');
+(14, 'Takishima', 8, 'Maybe You Should Talk to Someo', 'Lori Gottlieb', 'A therapist, her therapist and our lives revealed', 800.00, 'used', 'limited', 'MaybeYouShouldTalktoSomeone.jpg', 'ISBN03888132', 'hardcover', 'Akabane', 800.00, 'Ready'),
+(15, 'Takishima', 1, 'Differential Equations', 'Richard Bronson PH D', 'A crash course on mastering differential equations', 900.00, 'used', 'limited', 'DifferentialEquations.jpg', 'ISBN1112939121', 'hardcover', 'SoraNai_ShiroNai', 900.00, 'Ready');
 
 -- --------------------------------------------------------
 
@@ -150,26 +147,18 @@ CREATE TABLE `item_on_sale` (
 --
 
 INSERT INTO `item_on_sale` (`item_idnum`, `seller_username`, `book_type`, `item_name`, `author`, `item_desc`, `item_price`, `condition`, `in_stock`, `item_photo`, `book_no`, `format`, `status`) VALUES
-(5, 'Takishima', 1, '2', 'w', '8', 8.00, 'brandnew', 'available', 'df337639517ca58577427742f866454976348bfc.png', '88', 'audiocd', 0),
-(16, 'SoraNai_ShiroNai', 4, 'Toyota Supra GT', 'Shiro and Sora', 'The Supra was offered with a 94 kW (123 hp; 125 PS) 2.0 L 12-valve SOHC inline-6 engine (M-EU, chassis code MA45) ', 5300200.00, 'brandnew', 'available', '82cfd06d03b8f0f17aef2ea8c04ec860f37460df.png', '09393123213111', 'audiocd', 0),
-(25, 'SoraNai_ShiroNai', 1, '$item_name', '', '$item_desc', 0.00, 'used', 'available', '9dd6de677c96988d0010f68b99a774ef528c081d.png', '$book_no', 'hardcover', 0),
-(27, 'Takishima', 1, '$item_name', '', '$item_desc', 0.00, 'used', 'available', '90901aff0978db99bb947ec49f4d373a58f09ae7.png', '', 'hardcover', 0),
-(28, 'Takishima', 1, 'Cream-O', '', 'Limited Edition Vanilla Cream-Filled Chocolate Sandwich Cookies', 4000000.00, 'used', 'available', 'dbb56390853c7c75de5edc823e559f24672e14b0.png', '', 'hardcover', 0),
-(33, 'Takishima', 1, 'qweqwe', '', 'ewweqr`eqw', 123.00, 'used', 'available', 'f53edf4822ecc21221c5518f94b223b8f2bd9a47.png', '123123', 'hardcover', 0),
-(38, 'Takishima', 0, '$item_na123123131me', '', '$item_desc', 31.00, '', '', '', '$book_no', '', 0),
-(39, 'Takishima', 0, '32432o48u3284u', '', 'hukh3i4ukh', 0.00, '', '', '', '3h4iuh4uh', '', 0),
-(40, 'SoraNai_ShiroNai', 0, '$item_name', '', '$item_desc', 0.00, '', 'limited', '', '$book_no', 'ebook', 0),
-(41, 'Takishima', 6, '98', '', 'asd', 798.98, 'brandnew', 'available', '', '7987', 'hardcover', 0),
-(42, 'Takishima', 0, 'lllllllllll', '', 'lll', 0.00, 'brandnew', 'limited', '', 'll', 'audiocd', 0),
-(43, 'Takishima', 1, 'llllllllllls', '', 'lll', 0.00, 'brandnew', 'available', '', 'll', 'hardcover', 0),
-(44, 'Takishima', 0, '88', '', '8', 8.00, 'used', 'out-of-stock', '', '88', 'paperback', 0),
-(45, 'Takishima', 7, '2', '', '8', 8.00, 'brandnew', 'available', '', '88', 'hardcover', 0),
-(46, 'Takishima', 1, '2', '', '8', 8.00, 'brandnew', 'available', '', '88', 'audiocd', 0),
-(47, 'Takishima', 8, 'Love is War', 'Kaguya sama', 'A Book about the love of two highschool kids', 1000.00, 'brandnew', 'limited', '', 'ISBN990139', 'ebook', 0),
-(48, 'Takishima', 8, 'Love is War', 'Kaguya sama', 'A Book about the love of two highschool kids', 1000.00, 'brandnew', 'limited', '', 'ISBN990139', 'ebook', 0),
-(49, 'Takishima', 1, 'SSSSSSSSSSSSSSSSSS', '', '', 0.00, 'brandnew', 'available', '6e1a545da8bd43db36ec3f3ae0b356ce4793d9d8.png', '', 'hardcover', 0),
-(50, 'Dororo', 1, 'Helvette Jobigt', 'Pewdiepie', 'Mr Beast', 500.00, 'brandnew', 'available', '575052a44efcd36baaef9214e551701302af942b.png', '299', 'hardcover', 0),
-(51, 'Dororo', 1, 'Kaguya', 'Naruto', 'That Loli Kaguya', 70000001010.00, 'brandnew', 'available', '2071f2d181d751d15d6e2d0e9ef6562c4686feb9.png', 'ISBN99999999', 'hardcover', 0);
+(52, 'Takishima', 1, 'Of Mice and Men', 'John Steinback 1937', 'tells the story of two displaced migrant ranchworkers, who move from place to place in California search of new job opportunities during the Great Depressionin the United States.', 350.00, 'brandnew', 'available', 'OfMiceAndMen.jpg', 'ISBN3881823', 'hardcover', 0),
+(53, 'Takishima', 2, 'To Kill a Mockingbird', 'Harper Lee 1960', 'the primary themes of To Kill a Mockingbird involve racial injustice and the destruction of innocence.', 450.00, 'used', 'available', 'toKillaMockingBird.jpg', 'ISBN0002103', 'paperback', 0),
+(54, 'Takishima', 3, 'Into the Magic Shop', 'James Doty', 'Extraordinary things happen when we harmess the power of both the brain and the heart', 700.00, 'brandnew', 'limited', 'IntotheMagicShop.jpg', 'ISBN99100302', 'hardcover', 0),
+(55, 'SoraNai_ShiroNai', 2, 'The Second Mountain', 'David Brooks', 'The quest for a moral life', 600.00, 'brandnew', 'available', 'TheSecondMountain.jpg', 'ISBN8000312', 'paperback', 0),
+(56, 'SoraNai_ShiroNai', 2, 'Bad Blood', 'John Carreyrou', 'Secrets and Lies in a Silicon Valley Startup', 500.00, 'brandnew', 'available', 'BadBlood.jpg', 'ISBN0039132', 'hardcover', 0),
+(57, 'SoraNai_ShiroNai', 2, 'The Alchemist', 'Paulo Coelho', 'Follow the journey of an Andalusian shepherd boy named Santiago', 400.00, 'brandnew', 'available', 'TheAlchemist.jpg', 'ISBN900013255', 'paperback', 0),
+(58, 'Akabane', 1, 'Man Search for Meaning', 'Viktor Frankl', 'The classic tribute to hope from the holocaust', 400.00, 'used', 'out-of-stock', 'MansSearchforMeaning.jpg', 'ISBN44001222', 'hardcover', 0),
+(59, 'Akabane', 1, 'After Dark', 'Haruki Murakami 2004', 'Novel of encounters set in Tokyo during the spooky hours between midnight and dawn', 459.00, 'brandnew', 'limited', 'afterDark.jpg', 'ISBN00004012', 'paperback', 0),
+(60, 'Akabane', 1, 'The Subtle Art of Not Giving a', 'Mark Manson', 'A counterintuitive approach to living a good life', 200.00, 'brandnew', 'available', 'TheSubtleArtofNotGivingaFck.jpg', 'ISBN0000000001', 'hardcover', 0),
+(61, 'Dororo', 2, 'Milk and Honey', 'Rupi Kaur', 'A Collection of poetry and prose about survival', 200.00, 'used', 'available', 'milkandhoney.jpg', 'ISBN27731323', 'ebook', 0),
+(62, 'Dororo', 2, 'Where the Crawdads Sing', 'Peeps', 'Describes the life and adventures of a girl named Kya in the swaps of North Carolina', 700.00, 'brandnew', 'available', 'WheretheCrawdadsSing.jpg', 'ISBN848122488', 'audiocd', 0),
+(63, 'Dororo', 1, 'Unfreedom of the Press', 'Mark Levin', 'how those entrusted with news reporting today are destroying freedom of the press from within: 渡ot government oppression or suppression', 800.00, 'used', 'limited', 'UnfreedomofthePress.jpg', 'ISBN813003123', 'audiocd', 0);
 
 -- --------------------------------------------------------
 
@@ -188,39 +177,6 @@ CREATE TABLE `purchase_history` (
   `delivery_address` varchar(200) COLLATE utf8mb4_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
---
--- Dumping data for table `purchase_history`
---
-
-INSERT INTO `purchase_history` (`username`, `item_name`, `price`, `date_purchased`, `method`, `seller_username`, `delivery_status`, `delivery_address`) VALUES
-('Dororo', '$item_na123123131me', 31.00, '2019-05-27', 'SALE', 'Takishima', 0, ''),
-('Dororo', '$item_na123123131me', 31.00, '2019-05-27', 'SALE', 'Takishima', 0, ''),
-('Dororo', '$item_na123123131me', 31.00, '2019-05-27', 'SALE', 'Takishima', 0, ''),
-('Dororo', 'Toyota Supra GT', 5300200.00, '2019-05-27', 'SALE', 'SoraNai_ShiroNai', 0, ''),
-('Dororo', '$item_name', 0.00, '2019-05-27', 'SALE', 'SoraNai_ShiroNai', 0, ''),
-('Dororo', '$item_name', 0.00, '2019-05-27', 'SALE', 'Takishima', 0, ''),
-('Dororo', '2', 8.00, '2019-05-27', 'SALE', 'Takishima', 0, ''),
-('Dororo', 'Cream-O', 4000000.00, '2019-05-27', 'SALE', 'Takishima', 0, ''),
-('Dororo', 'qweqwe', 123.00, '2019-05-27', 'SALE', 'Takishima', 0, ''),
-('sora', 'Cream-O', 4000000.00, '2019-05-28', 'SALE', 'Takishima', 0, ''),
-('sora', 'Cream-O', 4000000.00, '2019-05-28', 'SALE', 'Takishima', 0, ''),
-('Dororo', '$item_name', 0.00, '2019-05-28', 'SALE', 'SoraNai_ShiroNai', 0, ''),
-('Dororo', '$item_name', 0.00, '2019-05-28', 'SALE', 'SoraNai_ShiroNai', 0, ''),
-('Dororo', '$item_name', 0.00, '2019-05-28', 'SALE', 'SoraNai_ShiroNai', 0, ''),
-('Dororo', '$item_name', 0.00, '2019-05-28', 'SALE', 'SoraNai_ShiroNai', 0, ''),
-('Dororo', '2', 8.00, '2019-05-28', 'SALE', 'Takishima', 0, ''),
-('Dororo', '2', 8.00, '2019-05-28', 'SALE', 'Takishima', 0, ''),
-('Dororo', '2', 8.00, '2019-05-28', 'SALE', 'Takishima', 0, ''),
-('Dororo', '2', 8.00, '2019-05-28', 'SALE', 'Takishima', 0, ''),
-('Dororo', '$item_name', 0.00, '2019-05-28', 'SALE', 'Takishima', 0, ''),
-('Dororo', '$item_name', 0.00, '2019-05-28', 'SALE', 'Takishima', 0, ''),
-('Dororo', '$item_name', 0.00, '2019-05-28', 'SALE', 'Takishima', 0, ''),
-('Dororo', '$item_name', 0.00, '2019-05-28', 'SALE', 'Takishima', 0, ''),
-('Dororo', '$item_name', 0.00, '2019-05-28', 'SALE', 'Takishima', 0, ''),
-('Dororo', '$item_name', 0.00, '2019-05-28', 'SALE', 'Takishima', 0, ''),
-('Takishima', 'Toyota Supra GT', 5300200.00, '2019-05-28', 'SALE', 'SoraNai_ShiroNai', 0, ''),
-('Akabane', 'qweqwe', 123.00, '2019-05-28', 'SALE', 'Takishima', 0, '');
-
 -- --------------------------------------------------------
 
 --
@@ -235,20 +191,6 @@ CREATE TABLE `sale_history` (
   `buyer_username` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `method` enum('SALE','AUCTION') COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `sale_history`
---
-
-INSERT INTO `sale_history` (`username`, `item_name`, `price`, `date_sold`, `buyer_username`, `method`) VALUES
-('Takishima', '$item_name', 0.00, '2019-05-28', 'Dororo', 'SALE'),
-('Takishima', '$item_name', 0.00, '2019-05-28', 'Dororo', 'SALE'),
-('Takishima', '$item_name', 0.00, '2019-05-28', 'Dororo', 'SALE'),
-('Takishima', '$item_name', 0.00, '2019-05-28', 'Dororo', 'SALE'),
-('Takishima', '$item_name', 0.00, '2019-05-28', 'Dororo', 'SALE'),
-('Takishima', '$item_name', 0.00, '2019-05-28', 'Dororo', 'SALE'),
-('SoraNai_ShiroNai', 'Toyota Supra GT', 5300200.00, '2019-05-28', 'Takishima', 'SALE'),
-('Takishima', 'qweqwe', 123.00, '2019-05-28', 'Akabane', 'SALE');
 
 -- --------------------------------------------------------
 
@@ -328,7 +270,8 @@ ALTER TABLE `book_type`
 ALTER TABLE `item_on_auction`
   ADD PRIMARY KEY (`item_idnum`),
   ADD KEY `item_on_auction_ibfk_1` (`book_type`),
-  ADD KEY `item_on_auction_ibfk_2` (`seller_username`);
+  ADD KEY `item_on_auction_ibfk_2` (`seller_username`),
+  ADD KEY `item_on_auction_ibfk_3` (`highest_bidder_username`);
 
 --
 -- Indexes for table `item_on_sale`
@@ -380,13 +323,13 @@ ALTER TABLE `book_type`
 -- AUTO_INCREMENT for table `item_on_auction`
 --
 ALTER TABLE `item_on_auction`
-  MODIFY `item_idnum` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `item_idnum` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `item_on_sale`
 --
 ALTER TABLE `item_on_sale`
-  MODIFY `item_idnum` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `item_idnum` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- Constraints for dumped tables

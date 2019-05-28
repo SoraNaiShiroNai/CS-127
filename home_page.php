@@ -160,7 +160,7 @@
   <body class='scrollbar-primary'>
     <div class="main_bg"></div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light" style="position: fixed; top: 0px;width: 100%; z-index: 1">
-      <b><a class="navbar-brand nav_logo" href="#"><i class='fas fa-book-open'></i>Readers'<span style='color: #AC75BD'>Exchange</span></a></b>
+      <b><a class="navbar-brand nav_logo" href="dashboard.php"><i class='fas fa-book-open'></i>Readers'<span style='color: #AC75BD'>Exchange</span></a></b>
 
 		
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
