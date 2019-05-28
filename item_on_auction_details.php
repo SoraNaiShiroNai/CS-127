@@ -205,12 +205,16 @@
 			  <br>
 			<?php if (isset($_SESSION['username']) && $_SESSION['username']!=$seller_username) { ?>
 			  
+				
 				<div class="" style = "text-align: center;">
-					<button type = 'submit' <?php if($status == "Closed") echo "disabled"; ?> class="btn btn-black rounded-0" data-toggle="modal" data-target="#submitOrder">BID</button>
+					<button type = 'submit' <?php if($status == "Closed") echo "disabled"; ?> class="btn btn-black rounded-0" data-toggle="modal" data-target="#submitOrder">PLACE BID</button>
 				</div>
 				
-			 <?php } ?>
-            </div>
+			 <?php } $link = "item_on_auction_bidders.php?id=".$id; ?>
+            </div><br>
+			<div class="" style = "text-align: center;">
+					<a href = "<?php echo $link; ?>" class="btn btn rounded-0">Bidding History</a>
+				</div>
           </div>
     </div>
 
@@ -238,10 +242,9 @@
             </div>
           </div>
           <div class="col-md-3 ml-auto">
-            <h2 class="footer-heading mb-4">Featured Product</h2>
-            <a href="#"><img src="images/product_1_bg.jpg" alt="Image" class="img-fluid mb-3"></a>
-            <h4 class="h5">Leather Brown Shoe</h4>
-            <strong class="text-black mb-3 d-inline-block">$60.00</strong>
+            <h2 class="footer-heading mb-4" style = "text-align: center;" >University of the Philippines</h2>
+            <a href="#"><img src="assets/logo.jpg" alt="Image" class="img-fluid mb-3"></a>
+            <h4 class="h5"></h4>
             
           </div>
         </div>

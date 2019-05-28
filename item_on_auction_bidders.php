@@ -1,9 +1,12 @@
 <?php
+
 	session_start();
+	
 	$username = "";
 	if(isset($_SESSION['username'])){
 		$username = $_SESSION['username'];
 	}
+
 	$db = new PDO('mysql:host=localhost;dbname=cmsc 127: buy and sell','root','');
 	
 	$stmt = $db->prepare("SELECT * FROM user WHERE `username` = '$username'"); 
@@ -16,11 +19,16 @@
 			foreach ($values as $key => $value) {
 				if($key=="default_delivery_addr")$default_delivery_addr = $value;
 				if($key=="contact_no")$contact_no = $value;
-				if($key=="email_addr")$email_addr = $value;
 			}
 		}
 		
 	$id = $_GET['id'];
+	
+	
+	
+	
+	//$item_idnum = $_POST['item_idnum'];
+	
 	$item_name = "";
 	$item_desc = "";
 	$in_stock = "";
@@ -35,7 +43,7 @@
 	
 	
 	if($status == "sale"){
-		$stmt = $db->prepare("SELECT * FROM item_on_sale WHERE `item_idnum` = '$id'"); 
+		$stmt = $db->prepare("SELECT * FROM item_on_auction WHERE `item_idnum` = '$id'"); 
 		$stmt->execute();
 		$results_arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		
@@ -52,13 +60,15 @@
 				if($key=="format")$format = $value;
 				if($key=="author")$author = $value;
 				if($key=="status")$status = $value;
+				if($key=="highest_bid")$highest_bid = $value;
+				if($key=="highest_bidder_username")$highest_bidder_username = $value;
 				if($key=="item_photo")$item_photo = "assets/books/".$value;
 			}
 		}
 	}
 	
-	if(($username == $seller_username) || ($status == 1)){
-		header('location: home_page.php');
+	if(($username != $seller_username)){
+		//header('location: home_page.php');
 	}
 	
 	//$results_arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -66,64 +76,33 @@
 	
 	if(isset($_POST['order_details'])){
 		
-		$date = date('Y-m-d H:i:s');
-		$default_delivery_addr = strip_tags($_POST['default_delivery_addr']);
-		$contact_no = strip_tags($_POST['contact_no']);
-		$add_message = strip_tags($_POST['add_message']);
-		$seller_username = strip_tags($_POST['seller_username']);
-		
-		//$stmt = $db->prepare("UPDATE `item_on_sale` SET `status` = '1' WHERE `item_idnum` = '$id';");
-		//$stmt->execute();
-		
-		$query = $db->prepare("SELECT * FROM user where username=?");
-		$query->bindparam(1,$seller_username);
-		$query->execute();
-		$result = $query->fetch();
-		
-		$stmt = $db->prepare("INSERT INTO `purchase_history` (`username`, `item_name`, `price`, `date_purchased`, `method`, `seller_username`, `delivery_address`) VALUES ('$username', '$item_name', '$item_price', '$date', 'SALE', '$seller_username', '$default_delivery_addr')");
-		$stmt->execute();
-		$stmt = $db->prepare("INSERT INTO `sale_history` (`username`, `item_name`, `price`, `date_sold`, `method`, `buyer_username`) VALUES ('$seller_username', '$item_name', '$item_price', '$date', 'SALE', '$username')");
-		$stmt->execute();
-		ob_start();
-		require ('vendor/autoload.php');
-		$mail = new PHPMailer\PHPMailer\PHPMailer();
-		$mail->isSMTP();
-		$mail->SMTPDebug = 2;
-		$mail->Host = "smtp.gmail.com";
-		$mail->Port = 587;
-		$mail->SMTPSecure = 'tls';
-		$mail->SMTPOptions = array(
-							'ssl' => array(
-								'verify_peer' => false,
-								'verify_peer_name' => false,
-								'allow_self_signed' => true
-							)
-						);
-		$mail->SMTPAuth = true;
-		$mail->Username = '121chicken121@gmail.com';
-		$mail->Password = 'cmsc-121';
-		
-		//send to buyer
-		$mail->setFrom('121chicken121@gmail.com', 'Readers Exchange');
-		$mail->addAddress($email_addr, 'Dear Customer');
-		$mail->Subject = 'Thank you for your patronage!';
-		$mail->Body = 'This is to confirm that we have already processed your item. Please be patient until it is delivered.';
-		$mail->send();
-		
-		//send to seller
-		$mail->setFrom('121chicken121@gmail.com', 'Readers Exchange');
-		$mail->addAddress($result['email_addr'], 'You');
-		$mail->Subject = 'Thank you for your patronage!';
-		$mail->Body = 'This is to confirm an item you posted has sold a copy.';
-		$mail->send();
-		
-		?>
-		<script>
-			alert("Order has been processed. Please wait for the delivery..");
-		</script> 
-		<?php
-		header('Refresh:0');
+		$bid = $_POST['bid'];
+		if($bid > $highest_bid && $status != "Closed"){
+			$date = date('Y-m-d H:i:s');
+			$seller_username = strip_tags($_POST['seller_username']);
+			
+			if($status=="Ready"){
+				$stmt = $db->prepare("UPDATE `item_on_auction` SET `highest_bid` = '$bid', `highest_bidder_username` = '$username', `status` = 'Open' WHERE `item_idnum` = '$id';");
+				$stmt->execute();
+			}else{
+				$stmt = $db->prepare("UPDATE `item_on_auction` SET `highest_bid` = '$bid', `highest_bidder_username` = '$username' WHERE `item_idnum` = '$id';");
+				$stmt->execute();
+			}
+			
+			
+			//$stmt = $db->prepare("INSERT INTO `purchase_history` (`username`, `item_name`, `price`, `date_purchased`, `method`, `seller_username`) VALUES ('$username', '$item_name', '$item_price', '$date', 'SALE', '$seller_username')"); 
+			//$stmt->execute();
+			
+			//INSERT MAILER HERE
+			//SEND TO BUYER AND SELLER
+			
+			header("Refresh:0");
+		}else{
+			?> <script> alert("Please enter a higher bid"); </script>
+			<?php
+		}
 	}
+
 ?>
 
 
@@ -153,6 +132,18 @@
     <link rel="stylesheet" href="css/aos.css">
 
     <link rel="stylesheet" href="css/style.css">
+	
+	 <script>
+      $(document).ready(function () {
+		$(document).on('click','#searchButton', function () {
+			var searchWord = $('#search_bar').val();
+			console.log(searchWord);
+			window.location.href = "listing.php?search=" + searchWord;
+        });
+      });
+
+
+    </script>
     
   </head>
   <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
@@ -162,15 +153,11 @@
       <b><a class="navbar-brand nav_logo" href="home_page.php">Readers'<span style='color: #AC75BD'>Exchange</span></a></b>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-        <form class="form-inline my-2 my-lg-0" style="width: 100%; padding-left: 50%;">
-          <input type='text' id='search_bar' style=" border-style: solid; border-width: 2px; border-color: grey; padding-left: 10px; width: 60%; padding-top: 2px">
-          <button class="btn btn-secondary my-2 my-sm-0 btn-sm" style="border-radius: 0 20px 20px 0; margin-right: 2%; padding-right: 15px"> Search </button>
-		  <?php if (!isset($_SESSION['username'])) {?>
-			  <button class="btn btn-info my-2 my-sm-0 btn-sm" style="border-radius: 20px 0 0 20px; padding-right: 15px; padding-left: 15px"> Log-in </button>
-			  <button class="btn btn-outline-info my-2 my-sm-0 btn-sm" style="border-radius: 0 20px 20px 0"> Sign up </button>
-		  <?php } ?>
-        </form>
+			<div class="form-inline my-2 my-lg-0" style="width: 120%; padding-left: 50%;">
+				<input class="clear_on_enter" type='text' id='search_bar' style=" border-style: solid; border-width: 2px; border-color: grey; padding-left: 10px; width: 70%; padding-top: 2px" placeholder="Look for great books...">
+				<button id = "searchButton" class="btn btn-secondary my-2 my-sm-0 btn-sm" style="border-radius: 0 20px 20px 0; margin-right: 2%; padding-right: 15px"> Search </button>
+			</div>
+	
       </div>
     </nav>
            
@@ -202,26 +189,46 @@
 				</blockquote>
 			
               <p class="text-black">Seller username: <strong><?php echo $seller_username?></strong></p>
-			  <p class="text-black">Author: <strong><?php echo $author?></strong></p>
-			  <p class="text-black">Book no: <strong><?php echo $book_no?></strong></p>
-			  <p class="text-black">Format: <strong><?php echo $format?></strong></p>
-			  <p class="text-black">Condition: <strong><?php echo $condition?></strong></p>
-			  <p class="text-black">Item Price: <strong><?php echo $item_price?></strong></p>
-			  <p class="text-black">Availability: <strong><?php echo $in_stock?></strong></p>
-			  
-			  <br>
-			 <?php if (isset($_SESSION['username'])) {?>
-			  
-				<div class="" style = "text-align: center;">
-					<button type = 'submit' <?php if($in_stock == 'out-of-stock') echo "disabled" ?> class="btn btn-black rounded-0" data-toggle="modal" data-target="#submitOrder">BUY</button>
+			  <p class="text-black">Starting Price: <strong><?php echo $item_price?></strong></p>
+			 
+			  <p class="text-black">Status: <strong><?php echo $status?></strong></p>
+			  <p class="text-black">Highest Bid: <strong><?php echo $highest_bid?></strong></p>
+			  <p class="text-black">Highest Bidder: <strong><?php echo $highest_bidder_username?></strong></p>
+				<?php $link = "item_on_auction_details.php?id=".$id; ?>
+            <br>
+			<div class="" style = "text-align: center;">
+					<a href = "<?php echo $link; ?>" class="btn btn-black rounded-0">Back</a>
 				</div>
-				
-			 <?php } ?>
+			 <hr>
+			   <h2 class="section-title mb-3">Bidders:</h2>
+			  <?php
+					$db = new PDO('mysql:host=localhost;dbname=cmsc 127: buy and sell','root','');
+					
+					$stmt = $db->prepare("SELECT * FROM `bid_details` WHERE `item_idnum` = '$id'"); 
+					$stmt->execute();
+					$results_arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
+					$bidder_username = "";
+					$bid = "";
+					
+					?> <table class = "table" > <?php
+						
+						foreach ($results_arr as $i => $values) {
+							foreach ($values as $key => $value) {
+								if($key=="bidder_username")$bidder_username = $value;
+								if($key=="bid")$bid = $value;
+							}
+							?><tr>
+							<td style = "text-align: center"><strong><?php echo $bidder_username?></strong></td>
+							<td style = "text-align: center"><strong><?php echo $bid?></strong></td></tr>
+							<?php
+						}
+				?>
+				</table>
             </div>
           </div>
     </div>
 
-        <footer class="site-footer bg-white">
+       <footer class="site-footer bg-white">
       <div class="container">
         <div class="row">
           <div class="col-md-8">
@@ -270,30 +277,18 @@
 		<div class="modal-content">
 		 <form method = 'post' id = 'order_details'>
 		  <div class="modal-header">
-			<h5 class="modal-title" id="exampleModalLongTitle">EDIT YOUR BILLING INFO</h5>
+			<h5 class="modal-title" id="exampleModalLongTitle">PLEASE ENTER YOUR BID</h5>
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			  <span aria-hidden="true">&times;</span>
 			</button>
 		  </div>
 		  <div class="modal-body">
-					<input type ='text' hidden name = "seller_username" value = "<?php echo $seller_username?>">
+					
 					<div class="form-group input-group">
 						<div class="input-group-prepend">
-							<span class="input-group-text"> Contact Number: </span>
+							<span class="input-group-text"> Bid: </span>
 						 </div>
-						<input name="contact_no" class="form-control" type="text" value = "<?php echo $contact_no;?>" required>
-					</div>
-					<div class="form-group input-group">
-						<div class="input-group-prepend">
-							<span class="input-group-text"> Meetup Location: </span>
-						 </div>
-						<input  name="default_delivery_addr" class="form-control" type="text" value = "<?php echo $default_delivery_addr;?>" required>
-					</div>
-					<div class="form-group input-group">
-						<div class="input-group-prepend">
-							<span class="input-group-text"> Additional Message: </span>
-						 </div>
-						<input name="add_message" class="form-control" type="text" placeholder = "optional">
+						<input name="bid" class="form-control" type="number" placeholder = "Enter a bid higher than the highest" value = "<?php echo ($highest_bid + 100) ?>" ;>
 					</div>	
 		  </div>
 		  <div class="modal-footer">

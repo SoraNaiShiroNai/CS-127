@@ -33,7 +33,7 @@
 		else if($status == "auction"){
 			$stmt = $db->prepare("INSERT INTO `item_on_auction` (`seller_username`, `item_name`, `item_desc`, `item_price`, `condition`, `in_stock`, `book_no`, `format`, `book_type`, `author`, `highest_bid`, `status`, `item_photo`) VALUES ('$username', '$item_name', '$item_desc', '$item_price', '$condition', '$in_stock', '$book_no', '$format', '$book_type', '$author', '$item_price', 'Ready', '$item_photo');");
 			$stmt->execute();
-			$stmt->debugDumpParams();
+			//$stmt->debugDumpParams();
 			
 		}
 		move_uploaded_file($_FILES["uploaded_file"]["tmp_name"], $target_file);
@@ -269,11 +269,10 @@
             </div>
           </div>
           <div class="col-md-3 ml-auto">
-            <h2 class="footer-heading mb-4">Featured Product</h2>
-            <a href="#"><img src="images/product_1_bg.jpg" alt="Image" class="img-fluid mb-3"></a>
-            <h4 class="h5">Leather Brown Shoe</h4>
-            <strong class="text-black mb-3 d-inline-block">$60.00</strong>
-            <p><a href="#" class="btn btn-black rounded-0">Add to Cart</a></p>
+            <h2 class="footer-heading mb-4" style = "text-align: center;" >University of the Philippines</h2>
+            <a href="#"><img src="assets/logo.jpg" alt="Image" class="img-fluid mb-3"></a>
+            <h4 class="h5"></h4>
+            
           </div>
         </div>
         <div class="row pt-5 mt-5 text-center">

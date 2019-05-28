@@ -6,17 +6,12 @@
 	
 
 	$db = new PDO('mysql:host=localhost;dbname=cmsc 127: buy and sell','root','');
-	
-	
-	
-	
-
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>History</title>
+    <title>Auctions List</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
@@ -44,6 +39,8 @@
     <script src="js/bootstrap.js"> </script>
     <script src="js/jquery.js"> </script>
 
+    <!-Personal css file to supplement bootstrap-!>
+    
 	
 	<script>
       function display_purchase () {
@@ -104,9 +101,6 @@
   
     <nav class="navbar navbar-expand-lg navbar-light bg-light" style="position: fixed; top: 0px;width: 100%; z-index: 1">
       <b><a class="navbar-brand nav_logo" href="home_page.php">Readers'<span style='color: #AC75BD'>Exchange</span></a></b>
-	  <b><a style = "padding-left: 0%" class="navbar-brand nav_link" href="#pH">Purchase History</a></b>
-	  <b><a style = "padding-left: 0%" class="navbar-brand nav_link" href="#sH">Sale History</a></b>
-
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
         <form class="form-inline my-2 my-lg-0" style="width: 100%; padding-left: 50%;">
@@ -144,39 +138,63 @@
                         
             <div class="row mb-4">
               <div class="col-md-7"  style = "margin-top: 80px; margin-left: 50px">
-                <h1>History of Purchases</h1>
+                <h1>Active Auctions</h1>
 				<br>
 				<table class="table" style = "color: white">
 				  <thead class="thead-dark">
 					<tr>
-					  <th scope="col">Book Name</th>
-					  <th scope="col">Price</th>
-					  <th scope="col">Date Purchased</th>
-					  <th scope="col">Method</th>
+					  <th scope="col">Book</th>
+					  <th scope="col">Starting Price</th>
+					  <th scope="col">Your Bid</th>
+					  <th scope="col">Highest Bid</th>
+					  <th scope="col">Highest Bidder</th>
 					</tr>
 				  </thead>
 				  <tbody id = "purchase_history_container">
 				  
 				  
 					  <?php
-						$stmt = $db->prepare("SELECT * FROM purchase_history WHERE `username` = '$username' AND `delivery_status` = '1'");
+						$stmt = $db->prepare("SELECT * FROM bid_details WHERE `bidder_username` = '$username'");
 						$stmt->execute();
 						$results_arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
+						$bid = 0;
+						$check = 0;
+						
 						
 						foreach ($results_arr as $i => $values) {
 							print "<tr>";
 							foreach ($values as $key => $value) {
-								if($key=="item_name")$item_name = $value;
-								if($key=="price")$price = $value;
-								if($key=="date_purchased")$date_purchased = $value;
-								if($key=="method")$method = $value;
-							}?>
-							<td><?php echo $item_name;?></td>
-							<td><?php echo $price;?></td>
-							<td><?php echo $date_purchased;?></td>
-							<td><?php echo $method;?></td>
+								if($key=="item_idnum")$item_idnum = $value;
+								if($key=="bid")$bid = $value;
+								
+								$stmt = $db->prepare("SELECT * FROM item_on_auction WHERE `item_idnum` = '$item_idnum'");
+								$stmt->execute();
+								$results_arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
+								
+								
+								
+								foreach ($results_arr as $i => $values) {
+									foreach ($values as $key => $value) {
+										if($key=="item_price")$price = $value;
+										if($key=="item_name")$item_name = $value;
+										if($key=="highest_bidder_username")$highest_bidder_username = $value;
+										if($key=="highest_bid")$highest_bid = $value;
+										
+									}
+								}
+								
+								
 							
-							</tr>
+							}
+							$link = "item_on_auction_details.php?id=".$item_idnum;
+							?>
+								<td><a style = "color: yellow;" href = <?php echo $link; ?>><?php echo $item_name; ?></a></td>
+								<td><?php echo $price;?></td>
+								<td><?php echo $bid;?></td>
+								<td><?php echo $highest_bid;?></td>
+								<td><?php echo $highest_bidder_username;?></td>
+								
+								</tr>
 							<?php
 						}
 					  ?>
@@ -189,67 +207,14 @@
         </div>
     </div>  
 	
-	 <div  id = "sH" class="site-blocks-cover overlay" style="background-color: white;" data-aos="fade" data-stellar-background-ratio="0.5">
-     
-        <div class="row align-items-center justify-content-center">
-
-          <div class="col-md-12" data-aos="fade-up" data-aos-delay="400">
-                        
-            <div class="row mb-4">
-              <div class="col-md-7" style = "margin-top: 80px; margin-left: 50px" >
-				
-				
-                <h1>History of Books Sold</h1>
-				<br>
-				<table class="table" style = "color: white">
-				  <thead class="thead-dark">
-					<tr>
-					  <th scope="col">Book Name</th>
-					  <th scope="col">Price</th>
-					  <th scope="col">Date Purchased</th>
-					  <th scope="col">Method</th>
-					</tr>
-				  </thead>
-				  <tbody>
-					<div id = "sale_history_container">
-					  <?php
-						$stmt = $db->prepare("SELECT * FROM sale_history WHERE `username` = '$username'  AND `delivery_status` = '1'");
-						$stmt->execute();
-						$results_arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
-						
-						foreach ($results_arr as $i => $values) {
-							print "<tr>";
-							foreach ($values as $key => $value) {
-								if($key=="item_name")$item_name = $value;
-								if($key=="price")$price = $value;
-								if($key=="date_sold")$date_sold = $value;
-								if($key=="method")$method = $value;
-							}?>
-							<td><?php echo $item_name;?></td>
-							<td><?php echo $price;?></td>
-							<td><?php echo $date_sold;?></td>
-							<td><?php echo $method;?></td>
-							
-							</tr>
-							<?php
-						}
-					  ?>
-					</div>
-				  </tbody>
-				</table>
-               
-              </div>
-            </div>
-          </div>
-        </div>
-    </div>  
+	 
 
 
     
    
 
   
-     <footer class="site-footer bg-white">
+   <footer class="site-footer bg-white">
       <div class="container">
         <div class="row">
           <div class="col-md-8">

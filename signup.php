@@ -202,11 +202,10 @@
             </div>
           </div>
           <div class="col-md-3 ml-auto">
-            <h2 class="footer-heading mb-4">Featured Product</h2>
-            <a href="#"><img src="images/product_1_bg.jpg" alt="Image" class="img-fluid mb-3"></a>
-            <h4 class="h5">Leather Brown Shoe</h4>
-            <strong class="text-black mb-3 d-inline-block">$60.00</strong>
-            <p><a href="#" class="btn btn-black rounded-0">Add to Cart</a></p>
+            <h2 class="footer-heading mb-4" style = "text-align: center;" >University of the Philippines</h2>
+            <a href="#"><img src="assets/logo.jpg" alt="Image" class="img-fluid mb-3"></a>
+            <h4 class="h5"></h4>
+            
           </div>
         </div>
         <div class="row pt-5 mt-5 text-center">

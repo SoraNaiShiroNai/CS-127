@@ -19,7 +19,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>History</title>
+    <title>Search</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
@@ -149,7 +149,7 @@
 
   
      
-    <div class="card popular_products" style="background-color: gray; width:100%; margin-top: 0px; margin-right: 0px;" data-aos="fade" data-stellar-background-ratio="0.5">
+    <div class="card popular_products" style="background-color: gray; min-height: 1200px; width:100%; margin-top: 0px; margin-right: 0px;" data-aos="fade" data-stellar-background-ratio="0.5">
      
 
           <div class="site-blocks-cover  col-md-12" data-aos="fade-up" data-aos-delay="400">
@@ -182,52 +182,7 @@
     </div>  
 
 
-    
-   
-
-  
-    <footer class="site-footer bg-white">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-8">
-            <div class="row">
-              <div class="col-md-5">
-                <h2 class="footer-heading mb-4">About Us</h2>
-                <p>Students from University of the Philippines Manila. CS 127 Group assigned for a Buy and Sell website.</p>
-              </div>
-              <div class="col-md-3 ">
-                <h2 class="footer-heading mb-4">Members</h2>
-                <ul class="list-unstyled">
-                  <li>Buenaventura</li>
-                  <li>Lim</li>
-                  <li>Matabang</li>
-                </ul>
-              </div>
-              <div class="col-md-4">
-                <h2 class="footer-heading mb-4">Location</h2>
-				<p>University of the Philippine Manila, Padre Faura Street</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 ml-auto">
-            <h2 class="footer-heading mb-4">Featured Product</h2>
-            <a href="#"><img src="images/product_1_bg.jpg" alt="Image" class="img-fluid mb-3"></a>
-            <h4 class="h5">Leather Brown Shoe</h4>
-            <strong class="text-black mb-3 d-inline-block">$60.00</strong>
-            <p><a href="#" class="btn btn-black rounded-0">Add to Cart</a></p>
-          </div>
-        </div>
-        <div class="row pt-5 mt-5 text-center">
-          <div class="col-md-12">
-            <div class="border-top pt-5">
-            <p>
-      </p>
-            </div>
-          </div>
-          
-        </div>
-      </div>
-    </footer>
+ 
 
   </div> <!-- .site-wrap -->
 
