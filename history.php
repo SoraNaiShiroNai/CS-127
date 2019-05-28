@@ -159,7 +159,7 @@
 				  
 				  
 					  <?php
-						$stmt = $db->prepare("SELECT * FROM purchase_history WHERE `username` = '$username' AND `delivery_status` = '1'");
+						$stmt = $db->prepare("SELECT * FROM purchase_history WHERE `username` = '$username'");
 						$stmt->execute();
 						$results_arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
 						
@@ -213,7 +213,7 @@
 				  <tbody>
 					<div id = "sale_history_container">
 					  <?php
-						$stmt = $db->prepare("SELECT * FROM sale_history WHERE `username` = '$username'  AND `delivery_status` = '1'");
+						$stmt = $db->prepare("SELECT * FROM sale_history WHERE `username` = '$username'");
 						$stmt->execute();
 						$results_arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
 						
