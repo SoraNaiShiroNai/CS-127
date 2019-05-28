@@ -125,9 +125,12 @@
 		$mail->Subject = 'Thank you for your patronage!';
 		$mail->Body = 'This is to confirm an item you posted has sold a copy.';
 		$mail->send();
-		?> <script> alert("Order has been processed. Please wait for the delivery.."); </script> <?php
 		
-		header("Refresh:0");
+		?><script>
+					alert("Order has been processed. Please wait for the delivery.."); 
+		   </script> 
+		<?php
+		header('Refresh:0');
 	}
 
 ?>

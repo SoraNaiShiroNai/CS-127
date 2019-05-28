@@ -90,6 +90,18 @@
 			}
 			
 			
+			$stmt = $db->prepare("SELECT * FROM `bid_details` WHERE `item_idnum` = '$id' AND `bidder_username` = '$username'"); 
+			$stmt->execute();
+			
+			if($stmt->rowCount() > 0){
+				$stmt = $db->prepare("UPDATE `bid_details` SET `bid` = '$bid' WHERE `item_idnum` = '$id' AND `bidder_username` = '$username'"); 
+				$stmt->execute();
+			}else{
+				$stmt = $db->prepare("INSERT INTO `bid_details` (`item_idnum`, `bidder_username`, `bid`) VALUES ('$id', '$username', '$bid')"); 
+				$stmt->execute();
+			}
+			
+			
 			//$stmt = $db->prepare("INSERT INTO `purchase_history` (`username`, `item_name`, `price`, `date_purchased`, `method`, `seller_username`) VALUES ('$username', '$item_name', '$item_price', '$date', 'SALE', '$seller_username')"); 
 			//$stmt->execute();
 			
