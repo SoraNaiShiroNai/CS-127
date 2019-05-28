@@ -31,8 +31,9 @@
 			
 		}
 		else if($status == "auction"){
-			$stmt = $db->prepare("INSERT INTO `item_on_auction` (`seller_username`, `item_name`, `item_desc`, `item_price`, `condition`, `in_stock`, `book_no`, `format`, `book_type`, `author`, `highest_bid`, `status`, `item_photo) VALUES ('$username', '$item_name', '$item_desc', '$item_price', '$condition', '$in_stock', '$book_no', '$format', '$book_type', '$author', '$item_price', 'Ready', '$item_photo');");
+			$stmt = $db->prepare("INSERT INTO `item_on_auction` (`seller_username`, `item_name`, `item_desc`, `item_price`, `condition`, `in_stock`, `book_no`, `format`, `book_type`, `author`, `highest_bid`, `status`, `item_photo`) VALUES ('$username', '$item_name', '$item_desc', '$item_price', '$condition', '$in_stock', '$book_no', '$format', '$book_type', '$author', '$item_price', 'Ready', '$item_photo');");
 			$stmt->execute();
+			$stmt->debugDumpParams();
 			
 		}
 		move_uploaded_file($_FILES["uploaded_file"]["tmp_name"], $target_file);
