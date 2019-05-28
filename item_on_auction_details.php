@@ -77,12 +77,18 @@
 	if(isset($_POST['order_details'])){
 		
 		$bid = $_POST['bid'];
-		if($bid > $highest_bid){
+		if($bid > $highest_bid && $status != "Closed"){
 			$date = date('Y-m-d H:i:s');
 			$seller_username = strip_tags($_POST['seller_username']);
 			
-			$stmt = $db->prepare("UPDATE `item_on_auction` SET `highest_bid` = '$bid', `highest_bidder_username` = '$username' WHERE `item_idnum` = '$id';");
-			$stmt->execute();
+			if($status=="Ready"){
+				$stmt = $db->prepare("UPDATE `item_on_auction` SET `highest_bid` = '$bid', `highest_bidder_username` = '$username', `status` = 'Open' WHERE `item_idnum` = '$id';");
+				$stmt->execute();
+			}else{
+				$stmt = $db->prepare("UPDATE `item_on_auction` SET `highest_bid` = '$bid', `highest_bidder_username` = '$username' WHERE `item_idnum` = '$id';");
+				$stmt->execute();
+			}
+			
 			
 			//$stmt = $db->prepare("INSERT INTO `purchase_history` (`username`, `item_name`, `price`, `date_purchased`, `method`, `seller_username`) VALUES ('$username', '$item_name', '$item_price', '$date', 'SALE', '$seller_username')"); 
 			//$stmt->execute();
@@ -132,7 +138,7 @@
   
   
   <nav class="navbar navbar-expand-lg navbar-light bg-light" style="position: fixed; top: 0px;width: 100%; z-index: 1">
-      <b><a class="navbar-brand nav_logo" href="#">Readers'<span style='color: #AC75BD'>Exchange</span></a></b>
+      <b><a class="navbar-brand nav_logo" href="home_page.php">Readers'<span style='color: #AC75BD'>Exchange</span></a></b>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
 

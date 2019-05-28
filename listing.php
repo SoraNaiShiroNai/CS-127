@@ -149,7 +149,7 @@
 
   
      
-    <div class="card popular_products" style="background-color: gray; width:100%;" data-aos="fade" data-stellar-background-ratio="0.5">
+    <div class="card popular_products" style="background-color: gray; width:100%; margin-top: 0px; margin-right: 0px;" data-aos="fade" data-stellar-background-ratio="0.5">
      
 
           <div class="site-blocks-cover  col-md-12" data-aos="fade-up" data-aos-delay="400">
@@ -165,13 +165,11 @@
           </div>
     </div>  
 	
+	
 	 <div class="site-blocks-cover overlay" style="background-color: white;" data-aos="fade" data-stellar-background-ratio="0.5">
      
-        <div class="row align-items-center justify-content-center">
-
-          <div class="col-md-12" data-aos="fade-up" data-aos-delay="400">
-                        
-            <div class="row mb-4">
+		  <div class="site-blocks-cover  col-md-12" data-aos="fade-up" data-aos-delay="400">
+                       
               <div class="" style = "margin-top: 80px; margin-left: 50px">
                 <h1>Search Results on Auction</h1>
 					<input type = "text" id="searchQuery2" value = "<?php echo $searchWord ?>">
@@ -181,8 +179,6 @@
 				
               </div>
             </div>
-          </div>
-        </div>
     </div>  
 
 

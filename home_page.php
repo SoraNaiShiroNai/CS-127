@@ -5,13 +5,13 @@
 	if(isset($_POST['login'])){
 		
 		$db = new PDO('mysql:host=localhost;dbname=cmsc 127: buy and sell','root','');
-		$password = strip_tags($_POST['password']);
+		$password = md5(strip_tags($_POST['password']));
 		$username = strip_tags($_POST['username']);
 		
 		$stmt = $db->prepare("SELECT * FROM user WHERE `username` = '$username' AND `password` = '$password'"); 
 		$stmt->execute();
 		 //insert checker here
-		//$stmt -> debugDumpParams();
+		$stmt -> debugDumpParams();
 		$results_arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		$checked = "";
 		
@@ -127,6 +127,12 @@
         display_books_on_auction();
         $(document).on('click', '.on_sale', function() {
           var location = 'item_on_sale_details.php?id=' + $(this).attr('id');
+		  window.location.href = location;
+		  
+        });
+		
+		 $(document).on('click', '.on_auction', function() {
+          var location = 'item_on_auction_details.php?id=' + $(this).attr('id');
 		  window.location.href = location;
 		  
         });

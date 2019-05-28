@@ -66,7 +66,7 @@
 			$stmt = $db->prepare("UPDATE `item_on_sale` SET `item_name` = '$item_name', `item_desc` = '$item_desc', `item_price` = '$item_price', `condition` = '$condition', `in_stock` = '$in_stock', `book_no` = '$book_no', `format` = '$format', `book_type` = '$book_type', `author` = '$author', `item_photo` = '$item_photo' WHERE `item_idnum` = '$id';");
 			$stmt->execute();
 			move_uploaded_file($_FILES["uploaded_file"]["tmp_name"], $target_file);
-			$stmt->debugDumpParams();
+			
 	}
 	
 	if(isset($_POST['deleteItem'])){
@@ -75,6 +75,7 @@
 		$stmt->execute();
 		
 		//AFTER DELETE REDIRECT TO PREVIOUS PAGE
+		
 
 	}
 ?>
@@ -108,7 +109,7 @@
   </head>
   
     <nav class="navbar navbar-expand-lg navbar-light bg-light" style="position: fixed; top: 0px;width: 100%; z-index: 1">
-      <b><a class="navbar-brand nav_logo" href="#">Readers'<span style='color: #AC75BD'>Exchange</span></a></b>
+      <b><a class="navbar-brand nav_logo" href="home_page.php">Readers'<span style='color: #AC75BD'>Exchange</span></a></b>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
@@ -151,7 +152,7 @@
 				
 				<form id = "newItem" method = 'post' action = '' enctype="multipart/form-data">
 					<div class="form-group input-group" style="display: flex; justify-content: center">
-						<input id="uploaded_file" style="" name="uploaded_file" class = "form-control" type="file" >
+						<input id="uploaded_file" style="" name="uploaded_file" class = "form-control" type="file" value = "<?php echo $item_photo;?>">
 					</div>
 					<div class="form-group input-group">
 						<div class="input-group-prepend">

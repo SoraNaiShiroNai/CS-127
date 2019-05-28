@@ -8,16 +8,40 @@
 		$contact_no = strip_tags($_POST['contact_no']);
 		$email_addr = strip_tags($_POST['email_addr']);
 		$email_notif = "marked";//strip_tags($_POST['email_notif']);
-		$password = strip_tags($_POST['password']);
+		$password = md5(strip_tags($_POST['password']));
 		
 		$db = new PDO('mysql:host=localhost;dbname=cmsc 127: buy and sell','root','');
 		$stmt = $db->prepare("INSERT INTO `user` (`username`, `password`, `last_name`, `first_name`, `default_delivery_addr`, `contact_no`, `email_addr`,  `email_notif`) VALUES ('$username', '$password', '$last_name', '$first_name', '$default_delivery_addr', '$contact_no', '$email_addr', '$email_notif');");
 		$stmt->execute();
+		$stmt->debugDumpParams();
 		
 		
 		//INSERT FORM VALIDATORS HERE
 		
 		$_SESSION['username'] = $username;
+		
+		require ('vendor/autoload.php');
+		$mail = new PHPMailer\PHPMailer\PHPMailer();
+		$mail->isSMTP();
+		$mail->SMTPDebug = 2;
+		$mail->Host = "smtp.gmail.com";
+		$mail->Port = 587;
+		$mail->SMTPSecure = 'tls';
+		$mail->SMTPOptions = array(
+							'ssl' => array(
+								'verify_peer' => false,
+								'verify_peer_name' => false,
+								'allow_self_signed' => true
+							)
+						);
+		$mail->SMTPAuth = true;
+		$mail->Username = '121chicken121@gmail.com';
+		$mail->Password = 'cmsc-121';
+		$mail->setFrom('121chicken121@gmail.com', 'Readers Exchange');
+		$mail->addAddress($email_addr, 'Dear Customer');
+		$mail->Subject = 'Welcome!';
+		$mail->Body = 'This is to confirm that we have saved your email address. We hope you find our store useful.';
+		$mail->send();
 		
 		//INSERT A CODE TO REDIRECT TO HOMEPAGE HERE
 		header ('location: home_page.php');
@@ -127,12 +151,12 @@
 					</div> <!-- form-group// -->
 					<div class="form-group input-group">
 						<div class="input-group-prepend">
-							<span class="input-group-text"> Confirm Password</i> </span>
+							<span class="input-group-text"> Password</i> </span>
 						</div>
-						<input name = "password2" class="form-control" type="password" id = "pass2">
+						<input name = "password2" class="form-control" placeholder = "confirm password" type="password" id = "pass2">
 					</div> <!-- form-group// -->   
 					<div class = "row mx-auto" style = "width: 600px">
-						<input type="checkbox" id="checkbox" name = "email_notif"> Sign Up for email notification.<br>
+						<input type="checkbox" id="checkbox" name = "email_notif" checked> Sign Up for email notification.<br>
 					</div>
 			
 					<div class="form-group">

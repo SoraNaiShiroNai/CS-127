@@ -19,6 +19,7 @@
 			foreach ($values as $key => $value) {
 				if($key=="default_delivery_addr")$default_delivery_addr = $value;
 				if($key=="contact_no")$contact_no = $value;
+				if($key=="email_addr")$email_addr = $value;
 			}
 		}
 		
@@ -83,11 +84,47 @@
 		//$stmt = $db->prepare("UPDATE `item_on_sale` SET `status` = '1' WHERE `item_idnum` = '$id';");
 		//$stmt->execute();
 		
+		$query = $db->prepare("SELECT * FROM user where username=?");
+		$query->bindparam(1,$seller_username);
+		$query->execute();
+		$result = $query->fetch();
+		
 		$stmt = $db->prepare("INSERT INTO `purchase_history` (`username`, `item_name`, `price`, `date_purchased`, `method`, `seller_username`) VALUES ('$username', '$item_name', '$item_price', '$date', 'SALE', '$seller_username')"); 
 		$stmt->execute();
 		
 		//INSERT MAILER HERE
 		//SEND TO BUYER AND SELLER
+		require ('vendor/autoload.php');
+		$mail = new PHPMailer\PHPMailer\PHPMailer();
+		$mail->isSMTP();
+		$mail->SMTPDebug = 2;
+		$mail->Host = "smtp.gmail.com";
+		$mail->Port = 587;
+		$mail->SMTPSecure = 'tls';
+		$mail->SMTPOptions = array(
+							'ssl' => array(
+								'verify_peer' => false,
+								'verify_peer_name' => false,
+								'allow_self_signed' => true
+							)
+						);
+		$mail->SMTPAuth = true;
+		$mail->Username = '121chicken121@gmail.com';
+		$mail->Password = 'cmsc-121';
+		
+		//send to buyer
+		$mail->setFrom('121chicken121@gmail.com', 'Readers Exchange');
+		$mail->addAddress($email_addr, 'Dear Customer');
+		$mail->Subject = 'Thank you for your patronage!';
+		$mail->Body = 'This is to confirm that we have already processed your item. Please be patient until it is delivered.';
+		$mail->send();
+		
+		//send to seller
+		$mail->setFrom('121chicken121@gmail.com', 'Readers Exchange');
+		$mail->addAddress($result['email_addr'], 'You');
+		$mail->Subject = 'Thank you for your patronage!';
+		$mail->Body = 'This is to confirm an item you posted has sold a copy.';
+		$mail->send();
 		?> <script> alert("Order has been processed. Please wait for the delivery.."); </script> <?php
 		
 		header("Refresh:0");
