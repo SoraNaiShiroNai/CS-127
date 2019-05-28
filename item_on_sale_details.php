@@ -153,6 +153,20 @@
     <link rel="stylesheet" href="css/aos.css">
 
     <link rel="stylesheet" href="css/style.css">
+	<script src="js/bootstrap.js"> </script>
+    <script src="js/jquery.js"> </script>
+	
+	 <script>
+      $(document).ready(function () {
+		$(document).on('click','#searchButton', function () {
+			var searchWord = $('#search_bar').val();
+			console.log(searchWord);
+			window.location.href = "listing.php?search=" + searchWord;
+        });
+      });
+
+
+    </script>
     
   </head>
   <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
@@ -162,15 +176,11 @@
       <b><a class="navbar-brand nav_logo" href="home_page.php">Readers'<span style='color: #AC75BD'>Exchange</span></a></b>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-        <form class="form-inline my-2 my-lg-0" style="width: 100%; padding-left: 50%;">
-          <input type='text' id='search_bar' style=" border-style: solid; border-width: 2px; border-color: grey; padding-left: 10px; width: 60%; padding-top: 2px">
-          <button class="btn btn-secondary my-2 my-sm-0 btn-sm" style="border-radius: 0 20px 20px 0; margin-right: 2%; padding-right: 15px"> Search </button>
-		  <?php if (!isset($_SESSION['username'])) {?>
-			  <button class="btn btn-info my-2 my-sm-0 btn-sm" style="border-radius: 20px 0 0 20px; padding-right: 15px; padding-left: 15px"> Log-in </button>
-			  <button class="btn btn-outline-info my-2 my-sm-0 btn-sm" style="border-radius: 0 20px 20px 0"> Sign up </button>
-		  <?php } ?>
-        </form>
+			<div class="form-inline my-2 my-lg-0" style="width: 120%; padding-left: 50%;">
+				<input class="clear_on_enter" type='text' id='search_bar' style=" border-style: solid; border-width: 2px; border-color: grey; padding-left: 10px; width: 70%; padding-top: 2px" placeholder="Look for great books...">
+				<button id = "searchButton" class="btn btn-secondary my-2 my-sm-0 btn-sm" style="border-radius: 0 20px 20px 0; margin-right: 2%; padding-right: 15px"> Search </button>
+			</div>
+	
       </div>
     </nav>
            

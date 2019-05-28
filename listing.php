@@ -110,6 +110,11 @@
           var location = 'item_on_auction_details.php?id=' + $(this).attr('id');
 		  window.location.href = location;
         });
+		$(document).on('click','#searchButton', function () {
+			var searchWord = $('#search_bar').val();
+			console.log(searchWord);
+			window.location.href = "listing.php?search=" + searchWord;
+        });
       });
 
 
@@ -118,15 +123,14 @@
   </head>
   
     <nav class="navbar navbar-expand-lg navbar-light bg-light" style="position: fixed; top: 0px;width: 100%; z-index: 1">
-      <b><a class="navbar-brand nav_logo" href="#">Readers'<span style='color: #AC75BD'>Exchange</span></a></b>
+      <b><a class="navbar-brand nav_logo" href="home_page.php">Readers'<span style='color: #AC75BD'>Exchange</span></a></b>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-        <form class="form-inline my-2 my-lg-0" style="width: 100%; padding-left: 50%;">
-          <input type='text' id='search_bar' style=" border-style: solid; border-width: 2px; border-color: grey; padding-left: 10px; width: 60%; padding-top: 2px">
-          <button class="btn btn-secondary my-2 my-sm-0 btn-sm" style="border-radius: 0 20px 20px 0; margin-right: 2%; padding-right: 15px"> Search </button>
-		  
-        </form>
+			<div class="form-inline my-2 my-lg-0" style="width: 120%; padding-left: 50%;">
+				<input class="clear_on_enter" type='text' id='search_bar' style=" border-style: solid; border-width: 2px; border-color: grey; padding-left: 10px; width: 70%; padding-top: 2px" placeholder="Look for great books...">
+				<button id = "searchButton" class="btn btn-secondary my-2 my-sm-0 btn-sm" style="border-radius: 0 20px 20px 0; margin-right: 2%; padding-right: 15px"> Search </button>
+			</div>
+	
       </div>
     </nav>
 	
@@ -149,7 +153,7 @@
 
   
      
-    <div class="card popular_products" style="background-color: gray; min-height: 1200px; width:100%; margin-top: 0px; margin-right: 0px;" data-aos="fade" data-stellar-background-ratio="0.5">
+    <div class="card popular_products" id = "pH" style="background-color: gray; min-height: 1200px; width:100%; margin-top: 0px; margin-right: 0px;" data-aos="fade" data-stellar-background-ratio="0.5">
      
 
           <div class="site-blocks-cover  col-md-12" data-aos="fade-up" data-aos-delay="400">
@@ -166,7 +170,7 @@
     </div>  
 	
 	
-	 <div class="site-blocks-cover overlay" style="background-color: white;" data-aos="fade" data-stellar-background-ratio="0.5">
+	 <div class="site-blocks-cover overlay"  style="background-color: white;" data-aos="fade" data-stellar-background-ratio="0.5">
      
 		  <div class="site-blocks-cover  col-md-12" data-aos="fade-up" data-aos-delay="400">
                        

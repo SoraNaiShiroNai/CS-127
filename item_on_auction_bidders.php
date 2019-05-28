@@ -132,6 +132,8 @@
     <link rel="stylesheet" href="css/aos.css">
 
     <link rel="stylesheet" href="css/style.css">
+	<script src="js/bootstrap.js"> </script>
+    <script src="js/jquery.js"> </script>
 	
 	 <script>
       $(document).ready(function () {

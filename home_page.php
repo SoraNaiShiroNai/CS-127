@@ -200,7 +200,7 @@
         <h4 style="font-size:1.3em; color: rgb(211,211,211); font-weight: normal; max-width: 45%; white-space: normal"> Readers'Exchange is a place where you can buy, sell, or auction books you currently have. </h4>
         <br>
         <div style="position: inline;">
-          <button class="btn btn-info" style="border-radius: 20px 0 0 20px; width: 70px">Buy</button><button class="btn btn-secondary" style="border-radius: 0; width: 90px">Auction</button><button class="btn btn-danger" style="border-radius: 0 20px 20px 0; width: 70px">Sell</button>
+          <a href = "listing.php#pH" class="btn btn-info" style="border-radius: 20px 0 0 20px; width: 70px">Buy</a><a href = "listing.php#auction_container_search" class="btn btn-secondary" style="border-radius: 0; width: 90px">Auction</a><a <?php if(isset($_SESSION['username'])) echo 'href = "add_item.php"'; ?> class="btn btn-danger" style="border-radius: 0 20px 20px 0; width: 70px">Sell</a>
         </div>
       </div>
 
