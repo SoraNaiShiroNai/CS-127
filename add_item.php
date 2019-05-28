@@ -7,7 +7,11 @@
 	$db = new PDO('mysql:host=localhost;dbname=cmsc 127: buy and sell','root','');
 	
 	if(isset($_POST['additem'])){
+		
 		$status = strip_tags($_POST['status']);
+		
+		$target_dir = "assets/books/";
+		$target_file = $target_dir . basename($_FILES["uploaded_file"]["name"]);
 		
 		$item_name = strip_tags($_POST['item_name']);
 		$item_desc = strip_tags($_POST['item_desc']);
@@ -18,17 +22,23 @@
 		$format = strip_tags($_POST['format']);
 		$book_type = strip_tags($_POST['book_type']);
 		$author = strip_tags($_POST['author']);
-		$item_photo = ""; //ARVIN INSERT ITEM PHOTO HERE THEN ADD THIS TO QUERY
+		$item_photo = strip_tags($_FILES['uploaded_file']['name']);
 		
 		
 		if($status == "sale"){
-			$stmt = $db->prepare("INSERT INTO `item_on_sale` (`seller_username`, `item_name`, `item_desc`, `item_price`, `condition`, `in_stock`, `book_no`, `format`, `book_type`, `author`) VALUES ('$username', '$item_name', '$item_desc', '$item_price', '$condition', '$in_stock', '$book_no', '$format', '$book_type', '$author');");
+			$stmt = $db->prepare("INSERT INTO `item_on_sale` (`seller_username`, `item_name`, `item_desc`, `item_price`, `condition`, `in_stock`, `book_no`, `format`, `book_type`, `author`, `item_photo`) VALUES ('$username', '$item_name', '$item_desc', '$item_price', '$condition', '$in_stock', '$book_no', '$format', '$book_type', '$author', '$item_photo');");
 			$stmt->execute();
+			
 		}
 		else if($status == "auction"){
-			$stmt = $db->prepare("INSERT INTO `item_on_auction` (`seller_username`, `item_name`, `item_desc`, `item_price`, `condition`, `in_stock`, `book_no`, `format`, `book_type`, `author`, `highest_bid`, `status`) VALUES ('$username', '$item_name', '$item_desc', '$item_price', '$condition', '$in_stock', '$book_no', '$format', '$book_type', '$author', '$item_price', 'Ready');");
+			$stmt = $db->prepare("INSERT INTO `item_on_auction` (`seller_username`, `item_name`, `item_desc`, `item_price`, `condition`, `in_stock`, `book_no`, `format`, `book_type`, `author`, `highest_bid`, `status`, `item_photo`) VALUES ('$username', '$item_name', '$item_desc', '$item_price', '$condition', '$in_stock', '$book_no', '$format', '$book_type', '$author', '$item_price', 'Ready', '$item_photo');");
 			$stmt->execute();
+			//$stmt->debugDumpParams();
+			
 		}
+		move_uploaded_file($_FILES["uploaded_file"]["tmp_name"], $target_file);
+		
+		?> <script> alert("Your Book has successfully been posted"); </script> <?php
 		
 	}
 
@@ -64,7 +74,7 @@
   </head>
   
     <nav class="navbar navbar-expand-lg navbar-light bg-light" style="position: fixed; top: 0px;width: 100%; z-index: 1">
-      <b><a class="navbar-brand nav_logo" href="#">Readers'<span style='color: #AC75BD'>Exchange</span></a></b>
+      <b><a class="navbar-brand nav_logo" href="home_page.php">Readers'<span style='color: #AC75BD'>Exchange</span></a></b>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
@@ -106,10 +116,9 @@
                 <h1>Add Book</h1>
 			
 				
-				<form id = "newItem" method = 'post' action = ''>
+				<form id = "newItem" method = 'post' action = '' enctype="multipart/form-data">
 					<div class="form-group input-group" style="display: flex; justify-content: center">
 						<input id="uploaded_file" style="" name="uploaded_file" class = "form-control" type="file" >
-						<a href="" onclick="document.getElementById('uploaded_file').click(); return false"><i class="fa fa-image" style="align:center; font-size: 10em" ></i></a>
 					</div>
 					<div class="form-group input-group">
 						<div class="input-group-prepend">
@@ -260,11 +269,10 @@
             </div>
           </div>
           <div class="col-md-3 ml-auto">
-            <h2 class="footer-heading mb-4">Featured Product</h2>
-            <a href="#"><img src="images/product_1_bg.jpg" alt="Image" class="img-fluid mb-3"></a>
-            <h4 class="h5">Leather Brown Shoe</h4>
-            <strong class="text-black mb-3 d-inline-block">$60.00</strong>
-            <p><a href="#" class="btn btn-black rounded-0">Add to Cart</a></p>
+            <h2 class="footer-heading mb-4" style = "text-align: center;" >University of the Philippines</h2>
+            <a href="#"><img src="assets/logo.jpg" alt="Image" class="img-fluid mb-3"></a>
+            <h4 class="h5"></h4>
+            
           </div>
         </div>
         <div class="row pt-5 mt-5 text-center">

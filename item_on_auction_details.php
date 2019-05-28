@@ -77,12 +77,30 @@
 	if(isset($_POST['order_details'])){
 		
 		$bid = $_POST['bid'];
-		if($bid > $highest_bid){
+		if($bid > $highest_bid && $status != "Closed"){
 			$date = date('Y-m-d H:i:s');
 			$seller_username = strip_tags($_POST['seller_username']);
 			
-			$stmt = $db->prepare("UPDATE `item_on_auction` SET `highest_bid` = '$bid', `highest_bidder_username` = '$username' WHERE `item_idnum` = '$id';");
+			if($status=="Ready"){
+				$stmt = $db->prepare("UPDATE `item_on_auction` SET `highest_bid` = '$bid', `highest_bidder_username` = '$username', `status` = 'Open' WHERE `item_idnum` = '$id';");
+				$stmt->execute();
+			}else{
+				$stmt = $db->prepare("UPDATE `item_on_auction` SET `highest_bid` = '$bid', `highest_bidder_username` = '$username' WHERE `item_idnum` = '$id';");
+				$stmt->execute();
+			}
+			
+			
+			$stmt = $db->prepare("SELECT * FROM `bid_details` WHERE `item_idnum` = '$id' AND `bidder_username` = '$username'"); 
 			$stmt->execute();
+			
+			if($stmt->rowCount() > 0){
+				$stmt = $db->prepare("UPDATE `bid_details` SET `bid` = '$bid' WHERE `item_idnum` = '$id' AND `bidder_username` = '$username'"); 
+				$stmt->execute();
+			}else{
+				$stmt = $db->prepare("INSERT INTO `bid_details` (`item_idnum`, `bidder_username`, `bid`) VALUES ('$id', '$username', '$bid')"); 
+				$stmt->execute();
+			}
+			
 			
 			//$stmt = $db->prepare("INSERT INTO `purchase_history` (`username`, `item_name`, `price`, `date_purchased`, `method`, `seller_username`) VALUES ('$username', '$item_name', '$item_price', '$date', 'SALE', '$seller_username')"); 
 			//$stmt->execute();
@@ -132,7 +150,7 @@
   
   
   <nav class="navbar navbar-expand-lg navbar-light bg-light" style="position: fixed; top: 0px;width: 100%; z-index: 1">
-      <b><a class="navbar-brand nav_logo" href="#">Readers'<span style='color: #AC75BD'>Exchange</span></a></b>
+      <b><a class="navbar-brand nav_logo" href="home_page.php">Readers'<span style='color: #AC75BD'>Exchange</span></a></b>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
@@ -187,12 +205,16 @@
 			  <br>
 			<?php if (isset($_SESSION['username']) && $_SESSION['username']!=$seller_username) { ?>
 			  
+				
 				<div class="" style = "text-align: center;">
-					<button type = 'submit' <?php if($status == "Closed") echo "disabled"; ?> class="btn btn-black rounded-0" data-toggle="modal" data-target="#submitOrder">BID</button>
+					<button type = 'submit' <?php if($status == "Closed") echo "disabled"; ?> class="btn btn-black rounded-0" data-toggle="modal" data-target="#submitOrder">PLACE BID</button>
 				</div>
 				
-			 <?php } ?>
-            </div>
+			 <?php } $link = "item_on_auction_bidders.php?id=".$id; ?>
+            </div><br>
+			<div class="" style = "text-align: center;">
+					<a href = "<?php echo $link; ?>" class="btn btn rounded-0">Bidding History</a>
+				</div>
           </div>
     </div>
 
@@ -220,10 +242,9 @@
             </div>
           </div>
           <div class="col-md-3 ml-auto">
-            <h2 class="footer-heading mb-4">Featured Product</h2>
-            <a href="#"><img src="images/product_1_bg.jpg" alt="Image" class="img-fluid mb-3"></a>
-            <h4 class="h5">Leather Brown Shoe</h4>
-            <strong class="text-black mb-3 d-inline-block">$60.00</strong>
+            <h2 class="footer-heading mb-4" style = "text-align: center;" >University of the Philippines</h2>
+            <a href="#"><img src="assets/logo.jpg" alt="Image" class="img-fluid mb-3"></a>
+            <h4 class="h5"></h4>
             
           </div>
         </div>

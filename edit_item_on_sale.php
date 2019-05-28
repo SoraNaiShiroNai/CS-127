@@ -66,7 +66,7 @@
 			$stmt = $db->prepare("UPDATE `item_on_sale` SET `item_name` = '$item_name', `item_desc` = '$item_desc', `item_price` = '$item_price', `condition` = '$condition', `in_stock` = '$in_stock', `book_no` = '$book_no', `format` = '$format', `book_type` = '$book_type', `author` = '$author', `item_photo` = '$item_photo' WHERE `item_idnum` = '$id';");
 			$stmt->execute();
 			move_uploaded_file($_FILES["uploaded_file"]["tmp_name"], $target_file);
-			$stmt->debugDumpParams();
+			
 	}
 	
 	if(isset($_POST['deleteItem'])){
@@ -75,6 +75,7 @@
 		$stmt->execute();
 		
 		//AFTER DELETE REDIRECT TO PREVIOUS PAGE
+		
 
 	}
 ?>
@@ -108,7 +109,7 @@
   </head>
   
     <nav class="navbar navbar-expand-lg navbar-light bg-light" style="position: fixed; top: 0px;width: 100%; z-index: 1">
-      <b><a class="navbar-brand nav_logo" href="#">Readers'<span style='color: #AC75BD'>Exchange</span></a></b>
+      <b><a class="navbar-brand nav_logo" href="home_page.php">Readers'<span style='color: #AC75BD'>Exchange</span></a></b>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
@@ -151,7 +152,7 @@
 				
 				<form id = "newItem" method = 'post' action = '' enctype="multipart/form-data">
 					<div class="form-group input-group" style="display: flex; justify-content: center">
-						<input id="uploaded_file" style="" name="uploaded_file" class = "form-control" type="file" >
+						<input id="uploaded_file" style="" name="uploaded_file" class = "form-control" type="file" value = "<?php echo $item_photo;?>">
 					</div>
 					<div class="form-group input-group">
 						<div class="input-group-prepend">
@@ -337,11 +338,10 @@
             </div>
           </div>
           <div class="col-md-3 ml-auto">
-            <h2 class="footer-heading mb-4">Featured Product</h2>
-            <a href="#"><img src="images/product_1_bg.jpg" alt="Image" class="img-fluid mb-3"></a>
-            <h4 class="h5">Leather Brown Shoe</h4>
-            <strong class="text-black mb-3 d-inline-block">$60.00</strong>
-            <p><a href="#" class="btn btn-black rounded-0">Add to Cart</a></p>
+            <h2 class="footer-heading mb-4" style = "text-align: center;" >University of the Philippines</h2>
+            <a href="#"><img src="assets/logo.jpg" alt="Image" class="img-fluid mb-3"></a>
+            <h4 class="h5"></h4>
+            
           </div>
         </div>
         <div class="row pt-5 mt-5 text-center">
